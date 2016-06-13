@@ -35,6 +35,16 @@
 				</section>
 				
 				<section>
+				<h2>Summary</h2>
+<ul>
+				<li>create a class derived from <code>beast.core.Runnable</code>
+<li>add inputs for items you want to be configurable
+<li>add a <code>main()</code>, creating an <code>Application</code> object from BEASTLabs
+<li>implement processing code that exploits JavaScript libraries
+</ul>
+				</section>
+				
+				<section>
 				Create a class that is RunnAble
 				<pre><code style="width:130%">
 public class MiniTracerClassic extends Runnable {
@@ -50,9 +60,8 @@ public class MiniTracerClassic extends Runnable {
 				Add a proper Description
 				<pre><code style="width:130%">
 @Description("Application to demonstrate how to use a web browser for post processing." +
-	 "It creates a simple chart using CanvasJS and uses classic style 'Inputs'. "
-	 + "See MiniTracerCanvasJS for a version with modern style 'Inputs'. "
-	 + "See MiniTracerPlotly for a version using the plotly library.")
+	 "It creates a simple chart using Plot.ly and uses classic style 'Inputs'. " +
+	 "See MiniTracerPlotly for a version with modern style 'Inputs'. "
 public class MiniTracerClassic extends Runnable {
 
 	@Override
@@ -67,9 +76,9 @@ public class MiniTracerClassic extends Runnable {
 Define Inputs -- file, burnin and trace should be sufficient
 <pre><code style="width:130%">
 public class MiniTracerClassic extends Runnable {
-	public Input<File> traceLogInput = new Input<>("file", "Input file containing a trace log", Validate.REQUIRED);
-	public Input<Integer> burninInput = new Input<>("burnin", "percentage of the log file to disregard as burn-in (default 10)", 10);
-	public Input<String> traceInput = new Input<>("trace", "name of the parameter/log entry to plot", "posterior");
+	public Input&lt;File> traceLogInput = new Input&lt;>("file", "Input file containing a trace log", Validate.REQUIRED);
+	public Input&lt;Integer> burninInput = new Input&lt;>("burnin", "percentage of the log file to disregard as burn-in (default 10)", 10);
+	public Input&lt;String> traceInput = new Input&lt;>("trace", "name of the parameter/log entry to plot", "posterior");
 
 	@Override
 	public void run() throws Exception {
@@ -82,9 +91,9 @@ public class MiniTracerClassic extends Runnable {
 Handle Inputs in InitAndValidate()
 <pre><code style="width:130%">
 public class MiniTracerClassic extends Runnable {
-	public Input<File> traceLogInput = new Input<>("file", "Input file containing a trace log", Validate.REQUIRED);
-	public Input<Integer> burninInput = new Input<>("burnin", "percentage of the log file to disregard as burn-in (default 10)", 10);
-	public Input<String> traceInput = new Input<>("trace", "name of the parameter/log entry to plot", "posterior");
+	public Input&lt;File> traceLogInput = new Input&lt;>("file", "Input file containing a trace log", Validate.REQUIRED);
+	public Input&lt;Integer> burninInput = new Input&lt;>("burnin", "percentage of the log file to disregard as burn-in (default 10)", 10);
+	public Input&lt;String> traceInput = new Input&lt;>("trace", "name of the parameter/log entry to plot", "posterior");
 
 	private File tracelog;
 	private Integer burnin = 10;
@@ -105,13 +114,13 @@ Note: nothing out of the ordinary has been done so far.
 				</section>
 				
 <section>
-Implement main()
+Implement <code>main()</code>: create <code>Application</code> object (from BEASTLabs package)
 <pre><code style="width:130%">
 public class MiniTracerClassic extends Runnable {
 ...
 
 	public static void main(String[] args) throws Exception {
-		Application app = new Application(new MiniTracerClassic(), "MiniTracer", args);
+		new Application(new MiniTracerClassic(), "MiniTracer", args);
 	}
 
 }
@@ -157,7 +166,7 @@ public void run() throws Exception {
 </section>
 
 <section>
-Formatting results in HTML: many JavaScript libraries to choose from. Here we use Plot.ly
+<p>Formatting results in HTML: many JavaScript libraries to choose from. Here we use Plot.ly</p>
 <pre><code style="width:130%">
 // create plot.ly chart see http://plot.ly/ for documentation
 String html = "&lt;html>\n" + 
@@ -186,7 +195,7 @@ String html = "&lt;html>\n" +
 &lt;/body>\n" +
 "&lt;/html>";
 </code></pre>
-Note: LogAnalyser class used to process trace files</p>
+Note: LogAnalyser class used to process trace files <br>
 26 lines of code
 </section>
 
@@ -238,7 +247,12 @@ From CLI:</p>
 Can use prefixes</p>
 <pre><code style="width:130%">/path/to/beast/bin/appstore MiniTracer -f xyz.log -t prior </code></pre>
 <pre><code style="width:130%">/path/to/beast/bin/appstore MiniTracer -f xyz.log -tr prior </code></pre>
+Forgot the arguments:
+<pre><code style="width:130%">/path/to/beast/bin/appstore MiniTracer -help </code></pre>
+<pre><code style="width:130%">/path/to/beast/bin/appstore MiniTracer -h </code></pre>
+</section>
 
+<section><p>Starting MiniTracer</p>
 <p>&nbsp;</p>
 From Beauti:</p>
 <ul>
@@ -255,11 +269,50 @@ Format a table</p>
 Code: <a href="https://github.com/rbouckaert/BeastApp/blob/master/src/examples/TraceToTable.java">https://github.com/rbouckaert/BeastApp/blob/master/src/examples/TraceToTable.java</a>
 </section>
 
+<section><p>Other things to do with HTML output:
+Create demographic plot</p>
+<img width=600 src="https://raw.githubusercontent.com/rbouckaert/BeastApp/master/doc/images/EBSP.png"/></p>
+
+Code: <a href="https://github.com/rbouckaert/BeastApp/blob/master/src/beast/app/tools/EBSPAnalyserApp.java">https://github.com/rbouckaert/BeastApp/blob/master/src/beast/app/tools/EBSPAnalyserApp.java</a>
+</section>
+
 <section><p>Other things to do with HTML output: table + dotty graph</p>
 <img width=600 src="https://raw.githubusercontent.com/rbouckaert/BeastApp/master/doc/images/bmodeltest.png"/></p>
 
 Code: <a href="https://github.com/BEAST2-Dev/bModelTest/blob/master/src/beast/app/tools/BModelAnalyser.java">https://github.com/BEAST2-Dev/bModelTest/blob/master/src/beast/app/tools/BModelAnalyser.java</a>
 </section>
+
+				<section>
+				<h2>Summary</h2>
+				Adding post processing Apps to BEAST is easy:
+<ul>
+				<li>create a class derived from <code>beast.core.Runnable</code>
+<li>add inputs for items you want to be configurable
+<li>add a <code>main()</code>, creating an <code>Application</code> object from BEASTLabs
+<li>implement processing code that exploits JavaScript libraries
+<ul>
+	<li>Processing data</li>
+	<li>Formatting results</li>
+	<li>Presenting results</li>
+	</ul>
+</ul>
+				</section>
+				
+
+
+<section><h2>Useful links</h2>
+<ul>
+<li>learning HTML, CSS, JavaScript: <a href="http://www.w3schools.com/">http://www.w3schools.com/</a>
+<li><a href="http://tablestyler.com/">tablestyler.com/</a> interactive CSS design for tables</li>
+<li><a href="https://plot.ly/">Plot.ly</a>
+<li><a href="http://canvasjs.com/">Canvas.js</a>
+<li><a href="https://d3js.org/">d3js</a> data visualisation library
+<li><a href="https://bl.ock.org/">d3 code snippets</a>
+<li><a href="https://github.com/mdaines/viz.js">viz.js</a> dotty interpreter
+</ul>
+
+</section>
+
 				</div>
 		</div>
 
