@@ -31,7 +31,7 @@
 				</section>
 
 <section><h2>Common usage</h2>
-<img src="commonUsage.png" style="padding:1cm;border:0px"/>
+	<img src="commonUsage.png" style="padding:1cm;border:0px"/>
 </section>
 
 <section>(relevant)<h2>BEAST2 Requirements</h2>
@@ -39,7 +39,7 @@
 <li>Plugin / package architecture
 <li>Checkpointing / restarting analyses
 <li>Self documenting code
-<li>Automatic software testing
+<li>Automatic software testing (junit, fest, Hudson)
 <li>Generalisation of existing models
 <!--
 <li>Support for variable-dimension parameters / reversible jump MCMC to explore trans-dimensional models 
@@ -50,7 +50,21 @@
 </section>
 
 <section><h3>BEAST Objects &amp; Inputs</h3>
-<img src="model.png" style="padding:1cm;border:0px"/>
+<table>
+	<tr valign='top'><td width="65%">
+<img src="model.png" style="padding:0.3cm;border:0px" width="2000" height="520"/>
+	</td>
+	<td style='valign:top;font-size:20pt'>
+	<ul>
+<li>Every object implements BEASTInterface
+<li>BEASTObject archetypical implementation
+<li>Object connect with other objects through Inputs
+<li>Object graph is a DAG
+<li>BEAUti: editor of the DAG
+<li>BEAUti template: provide subgraph + rules on how to connect</p>
+</ul>
+</td></tr></table>
+
 </section>
 
 <section><h2>Package overview</h2>
@@ -85,8 +99,13 @@
 <li>User list: <a href="https://groups.google.com/forum/#!forum/beast-users">https://groups.google.com/forum/#!forum/beast-users</a>
 <li>Issues: <a href="https://github.com/CompEvol/beast2/issues">https://github.com/CompEvol/beast2/issues</a>
 </ul>
-
-These slides: <a href="http://rbouckaert.github.io/BEAST2Intro/index.html">http://rbouckaert.github.io/BEAST2Intro/index.html</a>
+<p>Useless stats:</p>
+<ul style="font-size:22pt">
+<li>716 classes + 98 test classes (was 3965 + 42 in BEAST 1)
+<li>118 236 (551 273) lines, 75 757 (335 371, 5.5% parsers) lines of code 
+<li>461 (2539) files 
+</ul>
+<p style="font-size:10pt">These slides: <a href="http://rbouckaert.github.io/BEAST2Intro/index.html">http://rbouckaert.github.io/BEAST2Intro/index.html</a>
 </section>
 
 				</div>
