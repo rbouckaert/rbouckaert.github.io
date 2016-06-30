@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>BEAST 2 Architecture</title>
+
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section><div style="font-size:80pt">BEAST 2 Workshop</div>
+				<h2>SMBE 2016</h2>
+				
+				<img src="../BEAST2Intro/beast.png" style="padding:1cm;border:0px"/>
+				<h4>Remco Bouckaert</h4>
+				<!--p align="center">remco@cs.auckland.ac.nz</p-->
+				</section>
+<section><h2>Fossil based bear dating</h2>
+	<img src="bears.png" style="padding:1cm;border:0px"/>
+</section>
+
+<section><h2>Common usage</h2>
+	<img src="../BEAST2Intro/commonUsage.png" style="padding:1cm;border:0px"/>
+</section>
+
+<section>
+	<img src="lessCommonUsage.png" style="padding:1cm;border:0px"/>
+</section>
+<section>
+	<img src="lessCommonUsage2.png" style="padding:0.1cm;border:0px"/>
+</section>
+<section>
+	<img src="lessCommonUsage4.png" style="padding:0.1cm;border:0px"/>
+</section>
+
+
+<section><h2>Questions?</h2>
+
+<ul>
+<li> Cannot get an analysis to run?
+<li> MCMC convergence issues?
+<li> BEAUti does not behave well?
+<li> Don't know what to link?
+<li> Confused about clock and substitution rates?
+<li> ...?
+</ul>
+
+<p>
+<img src="beast-clinic.png" width="250" style="padding:0.1cm;border:0px"/>
+Visit the BEAST clinic in the trade area.
+</section>
+
+<section><h2>Useful links</h2>
+<ul>
+<li>General: <a href="http://beast2.org/">http://beast2.org/</a>
+<li>Tutorials: <a href="http://beast2.org/tutorials">http://beast2.org/tutorials</a>
+<li>Book: <a href="http://beast2.org/book/">http://beast2.org/book/</a>
+<li>Source code: <a href="https://github.com/CompEvol/beast2/">https://github.com/CompEvol/beast2/</a>
+<li>User list: <a href="https://groups.google.com/forum/#!forum/beast-users">https://groups.google.com/forum/#!forum/beast-users</a>
+<li>Issues: <a href="https://github.com/CompEvol/beast2/issues">https://github.com/CompEvol/beast2/issues</a>
+</ul>
+</section>
+
+				</div>
+		</div>
+
+		<script src="../reveal.js-3.3.0/lib/js/head.min.js"></script>
+		<script src="../reveal.js-3.3.0/js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '../reveal.js-3.3.0/plugin/markdown/marked.js' },
+					{ src: '../reveal.js-3.3.0/plugin/markdown/markdown.js' },
+					{ src: '../reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+					{ src: '../reveal.js-3.3.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
