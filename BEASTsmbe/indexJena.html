@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>BEAST 2 SMBE tutorial</title>
+		<title>BEAST 2 Jena tutorial</title>
 
 		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
 		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
@@ -24,13 +24,34 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section><div style="font-size:80pt">BEAST 2 Workshop</div>
-				<h2>SMBE 2016</h2>
+				<section><div style="font-size:80pt">BEAST 2 Tutorial</div>
+				<h2>Jena 2016</h2>
 				
 				<img src="../BEAST2Intro/beast.png" style="padding:1cm;border:0px"/>
 				<h4>Remco Bouckaert</h4>
 				<!--p align="center">remco@cs.auckland.ac.nz</p-->
 				</section>
+				
+				<section><h2>Why use BEAST?</h2>
+				<table><tr>
+				
+				<td>Divergence dating <img src="/Users/remco/research/ie/trunk/figures/2011MCCtree_widthCognateRate.png" width="200" style="padding:0.5cm;border:0px"/>
+				<td>Demographic reconstruction (Bayesian skyline) <img src="skyline.gif" width="200" style="padding:0.5cm;border:0px"/>
+				</tr><tr>
+				<td>Phylogeography <img src="/Users/remco/research/ie/trunk/figures/2011Diffusion.png" width="200" style="padding:0.5cm;border:0px"/>
+				<td>Ancestral state reconstruction <img src="AR.png" width="150" style="padding:0.5cm;border:0px"/>
+				</tr>
+				</table>
+				</section>
+
+				<section><h2>Why use BEAST 2?</h2>
+				<ul>
+				<li>Allows resuming MCMC run
+				<li>Allows reloading XML into BEAUti
+				<li>Many models/packages available
+				</ul>
+				</section>
+				
 <section style="height:100%"><h2>Fossil based bear dating</h2>
 	<img src="bears.png" style="padding:0.5cm;border:0px"/>
 	<p align="left" style="fontsize:10">Heath et al, PNAS, 2014</p>
@@ -50,25 +71,6 @@
 	<img src="lessCommonUsage4.png" style="padding:0.1cm;border:0px"/>
 </section>
 
-
-<section><h2>Questions?</h2>
-
-<!--
-<ul>
-<li> Cannot get an analysis to run?
-<li> Need BEAUti tips?
-<li> MCMC convergence issues?
-<li> Don't know what to link?
-<li> Confused about clock and substitution rates?
-<li> ...?
-</ul>
-<p>
--->
-<img src="beast-clinic.png" width="450" style="padding:0.1cm;border:0px"/>
-<p>
-Visit the BEAST clinic in Hall 1 in the trade area.
-</section>
-
 <section><h2>Useful links</h2>
 <ul>
 <li>General: <a href="http://beast2.org/">http://beast2.org/</a>
@@ -80,7 +82,13 @@ Visit the BEAST clinic in Hall 1 in the trade area.
 </ul>
 </section>
 
-				</div>
+<!--
+<section><h2>Questions?</h2>
+<img src="beast-clinic.png" width="450" style="padding:0.1cm;border:0px"/>
+<p>
+</section>
+-->
+</div>
 		</div>
 
 		<script src="../reveal.js-3.3.0/lib/js/head.min.js"></script>
