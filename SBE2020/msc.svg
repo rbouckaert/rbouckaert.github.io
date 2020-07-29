@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="350" width="400">
+<style type="text/css">
+.label {fill:#000;stroke:none;font-family:arial;font-size:10pt;font-style: normal;}
+.target {fill:#a00;stroke:none;font-family:arial;font-size:10pt;font-style: normal;}
+.labeld {fill:#aaa;stroke:none;font-family:arial;font-size:10pt;font-style: normal;}
+.smalllabel {fill:#0000f0;font-size:8pt;font-family:arial;text-anchor:middle;alignment-baseline:centre;}
+.arrow {stroke:blue;stroke-width:2;fill:none;}
+</style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+    	<g transform="matrix(0.5,0,0,0.5,0,1.5)">
+	      <path d="M0,0 L0,6 L9,3 z" fill="#00f"/>
+    	</g>
+    </marker>
+  </defs>
+<text class="label" x="40" y="20">Data is alignments instead of 1 SNP per loci</text>
+<text class="label" x="7" y="20">1.</text>
+<text class="label" x="90" y="35">	Relaxed/random local clock on species tree</text>
+<text class="label" x="7" y="35">2.</text>
+<text class="label" x="140" y="50">		Need it now</text>
+<text class="label" x="7" y="50">3.</text>
+<text class="target" x="190" y="65">			StarBEAST2</text>
+<text class="label" x="7" y="65">4.</text>
+<text class="target" x="140" y="80">		StarBeast3</text>
+<text class="label" x="7" y="80">5.</text>
+<text class="label" x="90" y="95">	Interest in pop size on species tree		</text>
+<text class="label" x="7" y="95">6.</text>
+<text class="target" x="140" y="110">		*BEAST/StarBEAST2</text>
+<text class="label" x="7" y="110">7.</text>
+<text class="target" x="140" y="125">		StarBeast3</text>
+<text class="label" x="7" y="125">8.</text>
+<text class="label" x="90" y="140">	Has (significant) migration events	</text>
+<text class="label" x="7" y="140">9.</text>
+<text class="target" x="140" y="155">		DENIM</text>
+<text class="label" x="0" y="155">10.</text>
+<text class="target" x="140" y="170">		AIM</text>
+<text class="label" x="0" y="170">11.</text>
+<text class="label" x="90" y="185">	Has introgression and hybridisation and few taxa</text>
+<text class="label" x="0" y="185">12.</text>
+<text class="target" x="140" y="200">		SpeciesNetwork</text>
+<text class="label" x="0" y="200">13.</text>
+<text class="label" x="90" y="215">	Interest in species delimitation</text>
+<text class="label" x="0" y="215">14.</text>
+<text class="target" x="140" y="230">		DISSECT</text>
+<text class="label" x="0" y="230">15.</text>
+<text class="target" x="140" y="245">		Any of the *BEASTs + model comparison</text>
+<text class="label" x="0" y="245">16.</text>
+<text class="target" x="90" y="260">	StarBeast3</text>
+<text class="label" x="0" y="260">17.</text>
+<text class="label" x="40" y="275">Need exact inference/small data</text>
+<text class="label" x="0" y="275">18.</text>
+<text class="target" x="90" y="290">	SNAPP</text>
+<text class="label" x="0" y="290">19.</text>
+<text class="target" x="40" y="305">Snapper</text>
+<text class="label" x="0" y="305">20.</text>
+<path d="M 70 22 c 0 8,0 8, 10 8" class="arrow" marker-end="url(#arrow)"/>
+<text x="58" y="34" class="smalllabel">yes</text>
+<path d="M 42 25 L 42 255" class="arrow" marker-end="url(#arrow)"/>
+<text x="30" y="34" class="smalllabel">no</text>
+<path d="M 120 37 c 0 8,0 8, 10 8" class="arrow" marker-end="url(#arrow)"/>
+<text x="108" y="49" class="smalllabel">yes</text>
+<path d="M 92 40 L 92 75" class="arrow" marker-end="url(#arrow)"/>
+<text x="80" y="49" class="smalllabel">no</text>
+<path d="M 170 52 c 0 8,0 8, 10 8" class="arrow" marker-end="url(#arrow)"/>
+<text x="158" y="64" class="smalllabel">yes</text>
+<path d="M 142 55 L 142 60" class="arrow" marker-end="url(#arrow)"/>
+<text x="130" y="64" class="smalllabel">no</text>
+<path d="M 120 97 c 0 8,0 8, 10 8" class="arrow" marker-end="url(#arrow)"/>
+<text x="108" y="109" class="smalllabel">yes</text>
+<path d="M 92 100 L 92 120" class="arrow" marker-end="url(#arrow)"/>
+<text x="80" y="109" class="smalllabel">no</text>
+<path d="M 120 104 c 0 16,0 16, 10 16" class="arrow" marker-end="url(#arrow)"/>
+<text x="132" y="116" class="smalllabel">or</text>
+<path d="M 120 142 c 0 8,0 8, 10 8" class="arrow" marker-end="url(#arrow)"/>
+<text x="108" y="154" class="smalllabel">yes</text>
+<path d="M 92 145 L 92 165" class="arrow" marker-end="url(#arrow)"/>
+<text x="80" y="154" class="smalllabel">no</text>
+<path d="M 120 149 c 0 16,0 16, 10 16" class="arrow" marker-end="url(#arrow)"/>
+<text x="132" y="161" class="smalllabel">or</text>
+<path d="M 120 187 c 0 8,0 8, 10 8" class="arrow" marker-end="url(#arrow)"/>
+<text x="108" y="199" class="smalllabel">yes</text>
+<path d="M 92 190 L 92 195" class="arrow" marker-end="url(#arrow)"/>
+<text x="80" y="199" class="smalllabel">no</text>
+<path d="M 120 217 c 0 8,0 8, 10 8" class="arrow" marker-end="url(#arrow)"/>
+<text x="108" y="229" class="smalllabel">yes</text>
+<path d="M 92 220 L 92 240" class="arrow" marker-end="url(#arrow)"/>
+<text x="80" y="229" class="smalllabel">no</text>
+<path d="M 120 224 c 0 16,0 16, 10 16" class="arrow" marker-end="url(#arrow)"/>
+<text x="132" y="236" class="smalllabel">or</text>
+<path d="M 70 277 c 0 8,0 8, 10 8" class="arrow" marker-end="url(#arrow)"/>
+<text x="58" y="289" class="smalllabel">yes</text>
+<path d="M 42 280 L 42 285" class="arrow" marker-end="url(#arrow)"/>
+<text x="30" y="289" class="smalllabel">no</text>
+</svg>

@@ -1,0 +1,565 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Efficient Bayesian Multi Species Coalescent with BEAST 2</title>
+
+
+                <link rel="stylesheet" href="reveal.js-master/dist/reveal.css">
+                <link rel="stylesheet" href="reveal.js-master/dist/theme/sky.css" id="theme">
+                
+<style>
+.reveal section {
+	text-align: left !important;
+}
+.reveal section p {
+    font-size: 30px !important;
+}
+.reveal section li {
+    font-size: 30px !important;
+}
+td {
+    font-size: 30px !important;
+}
+
+.reveal section h3 {
+    font-size: 40px !important;
+}</style>
+
+<!--
+                <link rel="stylesheet" href="reveal.js-master/plugin/highlight/monokai.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
+-->
+		<!-- Theme used for syntax highlighting of code -->
+<!--		
+		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+-->
+		<!-- Printing and PDF exports -->
+<!--		
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+-->		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+				
+				<div style="font-size:60px">Efficient Bayesian Multi Species Coalescent with BEAST 2</div>
+				
+				<p><center>SBE 29 July 2020</center></p>
+				<p>&nbsp;</p>
+				<p><center>Remco Bouckaert</center></p>
+				<p><center><span style="font-size:15pt">r.bouckaert@auckland.ac.nz</span></center></p>
+				<p><center><img src='uoa.png' style="border:0px"/>
+				<img src='shh.png' style="border:0px"/>
+				<img src='marsden.png' style="border:0px"/>				
+				</center></p>
+				</section>
+
+
+<section>
+<h3>Overview</h3>
+<ul>
+<li>Multi species coalescent
+<li>*BEAST/StarBEAST2/StarBeast3
+<li>SNAPP/Snapper in BEAST 2
+<li>Final observations
+</ul>
+</section>
+
+<section>
+<h3>Introducing the multi species coalescent (MSC)</h3>
+
+
+<div class="r-stack">
+  <img class="fragment fade-out" data-fragment-index="0" src="gopher.svg" width="1024" height="600">
+  <img class="fragment" data-fragment-index="0" src="gopher1.svg" width="1024" height="600">
+  <img class="fragment" src="gopher2.svg" width="1024" height="600">
+  <img class="fragment" src="gopher3.svg" width="1024" height="600">
+  <img class="fragment" src="gopher4.svg" width="1024" height="600">
+  <img class="fragment" src="gopher5.svg" width="1024" height="600">
+  <img class="fragment" src="gopher6.svg" width="1024" height="600">
+</div>
+
+<p style="position:relative;top:-40px;"><span style="font-size:12px">Douglas, BioInformatics, 2020 
+<a href="https://doi.org/10.1093/bioinformatics/btaa679">DOI:10.1093/bioinformatics/btaa679</a>
+<!--a href="https://uglytrees.nz/">uglytrees.nz</a--></span>
+
+</section>
+
+
+<section>
+<h3>MSC vs others</h3>
+
+<p><span style="position:relative;left:200px;">Shallow</span> <span style="position:relative;left:640px;">Deep</span>
+
+<div class="r-stack" style="position:relative;top:-20px;">
+  <img class="fragment fade-out" data-fragment-index="0" src="concat1.png" width="1024" height="400">
+  <img class="fragment" data-fragment-index="0" src="concat2.png" width="1024" height="400">
+  <img class="fragment" src="concat3.png" width="1024" height="400">
+</div>
+
+<center><img width="624" src="legend.png"/></center>
+
+<p style="position:relative;top:-40px;"><span style="font-size:12px">Ogilvie et al, SysBio, 2016 <a href="https://doi.org/10.1093/sysbio/syv118">DOI:10.1093/sysbio/syv118</a></span>
+</section>
+
+
+
+
+<section>
+<h3>When to use MSC</h3>
+
+<p>
+<table><tr><td style="vertical-align: text-top;">
+Always <br>(even when single gene data available)</td><td>
+<img style="position:relative;top:-60px;" width="200" src="gophermsc.svg"/></td></tr></table>
+
+<div class="fragment" style="position:relative;top:-60px;">
+<p >except...
+<p>
+<ul>
+<li>when all loci develop dependently
+	<ul>
+	<li>many viruses (e.g. corona, HBV)
+	<li>many bacteria
+	</ul>
+<li>if accurate dating is not important
+	<ul>
+	<li>only interested in topology, and many loci available 
+	</ul>
+<li>might get away with very deep phylogenies
+</ul>
+</div>
+</section>
+
+
+<section>
+<h3>Implementations in BEAST</h3>
+
+<table style="position:relative;top:-30px;"><tr><td>
+<p>
+MSC related Packages
+<ul>
+<li>*BEAST
+<li>StarBEAST2
+<li>StarBeast3
+<li>DISSECT
+<li>DENIM
+<li>AIM
+<li>SpeciesNetwork
+<li>SNAPP
+<li>Snapper
+</ul>
+<br><br><br><br><br>
+</td>
+<td>
+<div class="fragment fade-in">
+<p ><img src="msc.svg" width="640" height="500"/></a>
+<p style="position:relative;top:-50px;"><span style="font-size:12px"><a href="https://github.com/BEAST2-Dev/beast-docs/releases/download/v1.0/BFD-tutorial-2018.zip">species delimitation tutorial</a></span>
+</div>
+</td></tr></table>
+
+</section>
+
+
+
+<section>
+<h3>Overview</h3>
+<ul>
+<li>Multi species coalescent
+<li><b>*BEAST/StarBEAST2/StarBeast3</b>
+<li>SNAPP/Snapper in BEAST 2
+<li>Final observations
+</ul>
+</section>
+
+<section>
+<h3>*BEAST/StarBEAST2</h3>
+
+<table style="position:relative;top:-130px;"><tr><td>
+<ul>
+<li> Bayesian implementation of MSC
+<li> Allows linear population functions
+</ul>
+</td><td></td><td></td><td></td><td></td><td></td><td><img style="position:relative;top:-60px;" width="200" src="gophermsc.svg"/></td></tr></table>
+
+<center style="position:relative;top:-200px;">
+<div class="r-stack" style="position:relative;top:-1px;">
+  <img class="fragment fade-out" data-fragment-index="0" src="starbeast.gif" width="400" height="400">
+  <img class="fragment" data-fragment-index="0" src="starbeast_props2.png" width="1024" height="400">
+  <img class="fragment" src="starbeast_props3.png" width="1024" height="400">
+  <img class="fragment" src="starbeast_props4.png" width="1024" height="400">
+  <!--
+  <img class="fragment" src="starbeast_props4.png" width="1024" height="400">
+  -->
+</div>
+
+<!--<img style="position:relative; top:-30px;" src="starbeast.gif" width="400" height="400"/>--></center>
+<ul style="position:relative;top:-200px;">
+<li> Slow...
+</ul>
+
+<p><span style="font-size:12px;position:relative;top:-240px;" >Heled &amp; Drummond, MBE, 2009, <a href="https://doi.org/10.1093/molbev/msp274">doi:10.1093/molbev/msp274</a></span>
+</section>
+
+
+<section>
+<h3>StarBeast2</h3>
+
+<table style="position:relative;top:-30px;"><tr><td>
+<ul>
+<li> Relaxed/random local clock on species tree instead of gene trees
+<li> Integrate out population sizes
+<li> Smarter MCMC moves
+<li> Order of magnitude faster than *BEAST
+</ul>
+</td><td><img style="position:relative;top:-60px;" width="200" src="gophermsc.svg"/></td></tr></table>
+
+<p><span style="position:relative;top:-60px;font-size:12px">H Ogilvie et al, MBE, 2017, <a href="https://doi.org/10.1093/molbev/msx126">doi:10.1093/molbev/msx126</a></span>
+
+<div class="fragment fade-in">
+
+<center style="position:relative;top:-60px;">
+<img width="640" height="300" src="starbeast2.png"/>
+</center>
+<p><center><span style="position:relative;top:-120px;font-size:12px">GT-UCLN = gene tree uncorrelated log normal relaxed clock, ST-UCLN = species tree UCLN</span></center>
+
+</div>
+</section>
+
+<section>
+<h3>StarBeast3</h3>
+
+<p>Design many new operators to improve efficiency of MCMC
+<p>Effect of individual operators on posterior:
+<table><tr><td>
+<ul>
+<li> Bactrian/AVMN x 1.3
+<li> Gibbs x 2
+<li> Joint clock rate/pop size/species tree x 2
+<li> Parallelisation x 2-4
+<li> MC3 x 2-4 
+<span style="font-size:12px">Müller &amp; Bouckaert, PeerJ, 2020 <a href="https://www.biorxiv.org/content/biorxiv/early/2019/04/09/603514.full.pdf">preprint</a></span>
+</ul>
+</td><td>
+<img src="bactrianESS.svg" height="300"/>
+</td></tr></table>
+<p>Total: > 10 x faster StarBEAST2, 
+<p>> 100 x faster than *BEAST
+
+</section>
+
+
+
+
+
+
+
+<section>
+<h3>Overview</h3>
+<ul>
+<li>Multi species coalescent
+<li>*BEAST/StarBEAST2/StarBeast3
+<li><b>SNAPP/Snapper in BEAST 2</b>
+<li>Final observations
+</ul>
+</section>
+
+<section>
+<h3><a href="http://www.beast2.org/snapp/">SNAPP</a> <span style="font-size:30px">= SNP and AFLP Package for Phylogenetic Analysis</span></h3>
+<span style="font-size:12px;position:relative;top:-40px;">Bryant et al, MBE, 2012, <a href="https://doi.org/10.1093/molbev/mss086">doi:10.1093/molbev/mss086</a></span>
+<img style="position:relative;top:-40px;" src="snps.png"/>
+<!--table ><tr><td-->
+<ul style="position:relative;top:-40px;">
+<li> Assumptions: independent sites, only coalescent and mutation (no selection, migration, gene flow, ...)
+<li> Alignment of SNPs: one gene tree for every SNP
+<li> Integrates out gene trees
+<li> Bayesian implementation
+<li> Complexity: O(p s n<sup>2</sup> log n) for s species, n individuals, p patterns 
+</ul>
+
+<p>Details: <a href="http://www.beast2.org/snapp/">http://www.beast2.org/snapp/</a>
+
+</section>
+
+
+<section>
+<h3>Snapper </h3>
+
+<table style="position:relative;top:-20px"><tr>
+<td style="vertical-align: text-top;">A diffusion approximation to SNAPP
+<p><span style="font-size:12px">Stolz et al, SysBio, 2020, <a href="http://doi.org/10.1093/sysbio/syaa051">doi:10.1093/sysbio/syaa051</a></span>
+</td>
+<td style="position:relative;top:-80px"> <img width="300" src="snapper.png"/></td></tr></table>
+<ul style="position:relative;top:-120px">
+<li> Can handle more data than SNAPP 
+<li> Runtime independent on number of individuals
+<li> Approximation is very close
+<ul>
+
+<div class="r-stack">
+  <img class="fragment" data-fragment-index="0" src="snapp-soybean.png" width="600" height="400">
+  <img class="fragment" data-fragment-index="1" src="snapper-soybean.png" width="600" height="400">
+</div>
+</section>
+
+
+
+<section>
+<h3>Snapper in BEAST</h3>
+<ul style="position:relative;top:-120px" >
+<li> Install BEAST 2 (<a href="http://beast2.org">http://beast2.org</a>) <img src="../BEAST2Intro/beast.png"/>
+<li> Install Snapper package -- use package manager in BEAUti
+</ul>
+
+<center style="position:relative;top:-70px;">
+<img src="../BEAST2Intro/commonUsage.png" height="370"/>
+</center>
+
+<!--
+<p style="position:relative;top:-120px" >Set up an analysis:
+<ul style="position:relative;top:-120px" >
+<li> In BEAUti, select template for Snapper
+<li> Import alignment
+<li> Set up taxon sets, model parameters, priors, MCMC settings 
+</ul>
+<p style="position:relative;top:-120px" >Running an analysis: run BEAST and select the XML file produced by BEAUti
+-->
+</section>
+
+<section>
+<h3>Using Snapper in BEAST</h3>
+
+<p style="position:relative;top:-120px" >BEAUti <img style="position:relative;left:500px" src="../BEAST2Intro/beast.png"/>
+<table><tr><td>
+<ol style="position:relative;top:-120px">
+<li>select template for snapper
+<li>import data
+<li>assign species to samples
+<li>set up model parameters
+<li>set up priors
+<li>set up MCMC settings
+</ol>
+</td><td>
+<img style="position:relative;left=0px;top:-100px;" src="../BEAST2Intro/commonUsage.png" width="420"/>
+</td></tr></table>
+
+<p style="position:relative;top:-120px" >Running an analysis: run BEAST and select the XML file produced by BEAUti
+<p style="position:relative;top:-120px" >Interpreting the analysis:
+<ul style="position:relative;top:-120px" >
+<li> Run Tracer to check the MCMC run converged
+<li> Run DensiTree to visualise the phylogeny and population
+</ul>
+
+
+
+</section>
+
+
+
+
+<section>
+<h3>Set up taxon sets </h3>
+<p>In BEAUti, select template for Snapper
+<ul>
+<li> binary sequences for haploid or 3 values for diploid 
+<li> DNA sequences -- SNP calling by taking first sequence as the base
+</ul>
+
+<center>
+<img height="300" src="BEAUtiTaxonsets.png"/>
+</center>
+
+<p> Use 'guess' button to assist in assigning species.
+</section>
+
+
+<section>
+<h3>Setting up model parameters</h3>
+
+<ul>
+<li> Estimate pop sizes during MCMC
+<!--<li> Estimate from data, &mu;<sub>u</sub>=1/2&pi;<sub>0</sub>, &mu;<sub>v</sub>=1/2&pi;<sub>1</sub>, and keep fixed-->
+</ul>
+
+<center style="position:relative;top:-20px"><img height="400" src="BEAUtiSitemodel.png"/></center>
+
+<ul style="position:relative;top:-70px">
+<li> Include non-polymorphic sites if you can!
+<li> If sampling any, hyper priors need to be specified
+</ul>
+</section>
+
+<section>
+<h3>Ascertainment correction</h3>
+<p>SNP data is selected under various conditions</p>
+<ul>
+<li> Non constant sites only
+<li> At least N different sites only, e.g., no constant and no singletons
+<li> Panels -- different ascertainment within species.
+<li> Others...
+</ul>
+<p>This has considerable impact on pop sizes/tree height estimates
+
+<p>Active field of research/work in progress...
+</section>
+
+
+<section>
+<h3>Set up Priors</h3>
+<p>Do not use the defaults!
+
+<ul>
+<li> Yule (pure birth) prior on species tree topology, birth rate &lambda;
+<li> Gamma, Inverse Gamma, Uniform, etc. prior on pop sizes
+</ul>
+
+<center>
+<img height="350" src="BEAUtiPriors.png"/>
+</center>
+
+<ul>
+<li> If sampling any, hyper priors need to be specified
+</ul>
+</section>
+
+<section>
+<h3>Set up MCMC parameters</h3>
+
+<center>
+<img height="350" src="BEAUtiMCMC.png"/>
+</center>
+
+<p>Save XML, run with BEAST, check convergence with Tracer
+
+</section>
+
+
+
+
+<section>
+<h3>Overview</h3>
+<ul>
+<li>Multi species coalescent
+<li>*BEAST/StarBEAST2/StarBeast3
+<li>SNAPP/Snapper in BEAST 2
+<li><b>Final observations</b>
+</ul>
+</section>
+
+<section>
+<h3>Powers and limitations of MSC</h3>
+<table><tr><td>
+<p>MSC recovers
+<p><ul>
+<li> Topology
+<li> Coalescent times
+<li> Population sizes per branch
+</ul>
+<p>in order of decreasing accuracy
+</td><td>
+<p>Difficult cases<br>
+
+<img src="UglyTrees1.svg" width="200"/> <img src="UglyTrees2.svg" width="200"/>
+<!--<img src="difficult.png"/--></td></tr></table>
+
+<ul>
+<li> Not enough lineages => pop size samples from prior (happens often near root)
+<li> &theta; and coalescent time estimates are often more accurate at the bottom than the top of tree
+ (higher uncertainty when going back in time)
+</ul>
+</section>
+
+<section>
+<h3>Some correlations to be aware of</h3>
+<center>
+
+<div class="r-stack">
+  <img class="fragment fade-out" data-fragment-index="0" src="correlations2.png" width="540" height="500">
+  <img class="fragment" data-fragment-index="0" src="correlations.png" width="540" height="500">
+  <img class="fragment" src="correlations3.png" width="540" height="500">
+</div>
+</center>
+
+</section>
+
+
+<section>
+<h3>Detecting Anomalies</h3>
+<p>Consider two species
+<ul>
+<li> What happens when they are grouped as one species? Pop size increases
+<li> Where to look for cryptic species? Large pop size branches
+<li> Where to look for mislabeled lineages? Large pop size branches
+
+<p><img style="position:relative; top:-30px;" src="Ourisia2.png" width="600" height="350"/>
+</section>
+
+
+
+<section>
+<h3>Summary</h3>
+
+<ul>
+<li>Multi species coalescent methods provide tools for accurate species tree inference
+<li>There are many implementations in BEAST 2: choose according to your needs
+<li>StarBeast3 and Snapper now available BEAST 2
+</ul>
+</section>
+
+
+
+
+
+<section>
+<h3>Final notes</h3>
+
+<p>Thanks to:
+<table>
+<tr>
+<td>Jordan Douglas<br>Cinthy Jimenez Silva<br>Alexei Drummond<br>
+Craig Moritz<br>Quentin Atkinson<br>Russell Gray
+</td>
+<td>
+Joseph Heled<br>
+Huw Ogilvie<br>
+David Bryant<br>Marnus Stolz<br>
+Other BEAST package developers<br>Marsden 18-UOA-096 </td>
+</tr>
+</table>
+
+<p>Resources:
+<ul>
+<li>Download software, blog, tutorials, etc.: <a href="http:/beast2.org">http://beast2.org</a>
+<li>More tutorials at the <a href="taming-the-beast.org/">Taming the BEAST</a> site
+<li>BEAST <a href="https://groups.google.com/forum/#!forum/beast-users">user list</a>.
+<li>These slides: <a href="http://rbouckaert.github.io/SBE2020/index.html">http://rbouckaert.github.io/SBE2020</a></p>
+</ul>
+
+</section>
+
+
+				</div>
+		</div>
+
+		<script src="reveal.js-master/dist/reveal.js"></script>
+		<script src="reveal.js-master/plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({
+				center: true,
+				hash: true,
+				plugins: [ RevealHighlight ]
+			});
+		</script>
+	</body>
+</html>
