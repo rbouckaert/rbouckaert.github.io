@@ -70,8 +70,8 @@ td {
 <h3>Overview</h3>
 <ul>
 <li>Multi species coalescent
-<li>*BEAST/StarBEAST2/StarBeast3
 <li>SNAPP/Snapper in BEAST 2
+<li>*BEAST/StarBEAST2/StarBeast3
 <li>Final observations
 </ul>
 </section>
@@ -173,94 +173,6 @@ MSC related Packages
 
 
 
-<section>
-<h3>Overview</h3>
-<ul>
-<li>Multi species coalescent
-<li><b>*BEAST/StarBEAST2/StarBeast3</b>
-<li>SNAPP/Snapper in BEAST 2
-<li>Final observations
-</ul>
-</section>
-
-<section>
-<h3>*BEAST/StarBEAST2</h3>
-
-<table style="position:relative;top:-130px;"><tr><td>
-<ul>
-<li> Bayesian implementation of MSC
-<li> Allows linear population functions
-</ul>
-</td><td></td><td></td><td></td><td></td><td></td><td><img style="position:relative;top:-60px;" width="200" src="gophermsc.svg"/></td></tr></table>
-
-<center style="position:relative;top:-200px;">
-<div class="r-stack" style="position:relative;top:-1px;">
-  <img class="fragment fade-out" data-fragment-index="0" src="starbeast.gif" width="400" height="400">
-  <img class="fragment" data-fragment-index="0" src="starbeast_props2.png" width="1024" height="400">
-  <img class="fragment" src="starbeast_props3.png" width="1024" height="400">
-  <img class="fragment" src="starbeast_props4.png" width="1024" height="400">
-  <!--
-  <img class="fragment" src="starbeast_props4.png" width="1024" height="400">
-  -->
-</div>
-
-<!--<img style="position:relative; top:-30px;" src="starbeast.gif" width="400" height="400"/>--></center>
-<ul style="position:relative;top:-200px;">
-<li> Slow...
-</ul>
-
-<p><span style="font-size:12px;position:relative;top:-240px;" >Heled &amp; Drummond, MBE, 2009, <a href="https://doi.org/10.1093/molbev/msp274">doi:10.1093/molbev/msp274</a></span>
-</section>
-
-
-<section>
-<h3>StarBeast2</h3>
-
-<table style="position:relative;top:-30px;"><tr><td>
-<ul>
-<li> Relaxed/random local clock on species tree instead of gene trees
-<li> Integrate out population sizes
-<li> Smarter MCMC moves
-<li> Order of magnitude faster than *BEAST
-</ul>
-</td><td><img style="position:relative;top:-60px;" width="200" src="gophermsc.svg"/></td></tr></table>
-
-<p><span style="position:relative;top:-60px;font-size:12px">H Ogilvie et al, MBE, 2017, <a href="https://doi.org/10.1093/molbev/msx126">doi:10.1093/molbev/msx126</a></span>
-
-<div class="fragment fade-in">
-
-<center style="position:relative;top:-60px;">
-<img width="640" height="300" src="starbeast2.png"/>
-</center>
-<p><center><span style="position:relative;top:-120px;font-size:12px">GT-UCLN = gene tree uncorrelated log normal relaxed clock, ST-UCLN = species tree UCLN</span></center>
-
-</div>
-</section>
-
-<section>
-<h3>StarBeast3</h3>
-
-<p>Design many new operators to improve efficiency of MCMC
-<p>Effect of individual operators on posterior:
-<table><tr><td>
-<ul>
-<li> Bactrian/AVMN x 1.3
-<li> Gibbs x 2
-<li> Joint clock rate/pop size/species tree x 2
-<li> Parallelisation x 2-4
-<li> MC3 x 2-4 
-<span style="font-size:12px">Müller &amp; Bouckaert, PeerJ, 2020 <a href="https://www.biorxiv.org/content/biorxiv/early/2019/04/09/603514.full.pdf">preprint</a></span>
-</ul>
-</td><td>
-<img src="bactrianESS.svg" height="300"/>
-</td></tr></table>
-<p>Total: > 10 x faster StarBEAST2, 
-<p>> 100 x faster than *BEAST
-
-</section>
-
-
-
 
 
 
@@ -269,8 +181,8 @@ MSC related Packages
 <h3>Overview</h3>
 <ul>
 <li>Multi species coalescent
-<li>*BEAST/StarBEAST2/StarBeast3
 <li><b>SNAPP/Snapper in BEAST 2</b>
+<li>*BEAST/StarBEAST2/StarBeast3
 <li>Final observations
 </ul>
 </section>
@@ -447,6 +359,101 @@ MSC related Packages
 
 
 
+
+
+
+
+<section>
+<h3>Overview</h3>
+<ul>
+<li>Multi species coalescent
+<li>SNAPP/Snapper in BEAST 2
+<li><b>*BEAST/StarBEAST2/StarBeast3</b>
+<li>Final observations
+</ul>
+</section>
+
+<section>
+<h3>*BEAST/StarBEAST2</h3>
+
+<table style="position:relative;top:-130px;"><tr><td>
+<ul>
+<li> Bayesian implementation of MSC
+<li> Allows linear population functions
+</ul>
+</td><td></td><td></td><td></td><td></td><td></td><td><img style="position:relative;top:-60px;" width="200" src="gophermsc.svg"/></td></tr></table>
+
+<center style="position:relative;top:-200px;">
+<div class="r-stack" style="position:relative;top:-1px;">
+  <img class="fragment fade-out" data-fragment-index="0" src="starbeast.gif" width="400" height="400">
+  <img class="fragment" data-fragment-index="0" src="starbeast_props2.png" width="1024" height="400">
+  <img class="fragment" src="starbeast_props3.png" width="1024" height="400">
+  <img class="fragment" src="starbeast_props4.png" width="1024" height="400">
+  <!--
+  <img class="fragment" src="starbeast_props4.png" width="1024" height="400">
+  -->
+</div>
+
+<!--<img style="position:relative; top:-30px;" src="starbeast.gif" width="400" height="400"/>--></center>
+<ul style="position:relative;top:-200px;">
+<li> Slow...
+</ul>
+
+<p><span style="font-size:12px;position:relative;top:-240px;" >Heled &amp; Drummond, MBE, 2009, <a href="https://doi.org/10.1093/molbev/msp274">doi:10.1093/molbev/msp274</a></span>
+</section>
+
+
+<section>
+<h3>StarBeast2</h3>
+
+<table style="position:relative;top:-30px;"><tr><td>
+<ul>
+<li> Relaxed/random local clock on species tree instead of gene trees
+<li> Integrate out population sizes
+<li> Smarter MCMC moves
+<li> Order of magnitude faster than *BEAST
+</ul>
+</td><td><img style="position:relative;top:-60px;" width="200" src="gophermsc.svg"/></td></tr></table>
+
+<p><span style="position:relative;top:-60px;font-size:12px">H Ogilvie et al, MBE, 2017, <a href="https://doi.org/10.1093/molbev/msx126">doi:10.1093/molbev/msx126</a></span>
+
+<div class="fragment fade-in">
+
+<center style="position:relative;top:-60px;">
+<img width="640" height="300" src="starbeast2.png"/>
+</center>
+<p><center><span style="position:relative;top:-120px;font-size:12px">GT-UCLN = gene tree uncorrelated log normal relaxed clock, ST-UCLN = species tree UCLN</span></center>
+
+</div>
+</section>
+
+<section>
+<h3>StarBeast3</h3>
+
+<p>Design many new operators to improve efficiency of MCMC
+<p>Effect of individual operators on posterior:
+<table><tr><td>
+<ul>
+<li> Bactrian/AVMN x 1.3
+<li> Gibbs x 2
+<li> Joint clock rate/pop size/species tree x 2
+<li> Parallelisation x 2-4
+<li> MC3 x 2-4 
+<span style="font-size:12px">Müller &amp; Bouckaert, PeerJ, 2020 <a href="https://www.biorxiv.org/content/biorxiv/early/2019/04/09/603514.full.pdf">preprint</a></span>
+</ul>
+</td><td>
+<img src="bactrianESS.svg" height="300"/>
+</td></tr></table>
+<p>Total: > 10 x faster StarBEAST2, 
+<p>> 100 x faster than *BEAST
+
+</section>
+
+
+
+
+
+
 <section>
 <h3>Overview</h3>
 <ul>
@@ -540,8 +547,9 @@ Other BEAST package developers<br>Marsden 18-UOA-096 </td>
 
 <p>Resources:
 <ul>
-<li>Download software, blog, tutorials, etc.: <a href="http:/beast2.org">http://beast2.org</a>
-<li>More tutorials at the <a href="taming-the-beast.org/">Taming the BEAST</a> site
+<li>Download software, blog, tutorials, etc.: <a href="http://beast2.org">http://beast2.org</a>
+<li>More tutorials at the <a href="http://taming-the-beast.org/">Taming the BEAST</a> site
+<li><a href="https://github.com/rbouckaert/starbeast3">StarBeast3</a>.
 <li>BEAST <a href="https://groups.google.com/forum/#!forum/beast-users">user list</a>.
 <li>These slides: <a href="http://rbouckaert.github.io/SBE2020/">http://rbouckaert.github.io/SBE2020/</a></p>
 </ul>
