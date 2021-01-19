@@ -11,6 +11,13 @@
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+<!--
+.reveal section img { background:none; border:none; box-shadow:none; }
+-->
+<style>	
+.reveal section img { background:none; border: 1px solid #eeeeee; box-shadow:none; }
+.label {border-right: 2px solid black; color:blue	}
+</style>
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -34,13 +41,14 @@
 <section data-transition="none"><h4>Matrix => tree by single linke clustering</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> 2 </td><td>$\infty$ </td><td> 5 </td></tr>
-<tr><td>2 </td><td> - </td><td> 6 </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> 6 </td><td> - </td><td> 4 </td></tr>
-<tr><td> 5 </td><td> $\infty$ </td><td> 4 </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> 2 </td><td> 5 </td><td> x </td></tr>
+<tr><td class="label">2</td><td>2 </td><td> - </td><td> 4 </td><td> x </td></tr>
+<tr><td class="label">3</td><td> 5 </td><td> 4 </td><td> - </td><td> 6 </td></tr>
+<tr><td class="label">4</td><td> x </td><td> x </td><td> 6 </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
-<img src="figures/slink/x0.png"/>
+<img src="figures/slink/x0.png" width="450"/>
 </td>	
 </table>
 <p style="font-size:20pt">Repeat: find minimum in matrix, connect associated clades (if not already connected)
@@ -49,13 +57,14 @@
 <section data-transition="none"><h4>Matrix => tree by single linke clustering</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> <b>2</b> </td><td>$\infty$ </td><td> 5 </td></tr>
-<tr><td>2 </td><td> - </td><td> 6 </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> 6 </td><td> - </td><td> 4 </td></tr>
-<tr><td> 5 </td><td> $\infty$ </td><td> 4 </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> <b>2</b> </td><td> 5 </td><td> x </td></tr>
+<tr><td class="label">2</td><td>2 </td><td> - </td><td> 4 </td><td> x </td></tr>
+<tr><td class="label">3</td><td> 5 </td><td> 4 </td><td> - </td><td> 6 </td></tr>
+<tr><td class="label">4</td><td> x </td><td> x </td><td> 6 </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
-<img src="figures/slink/x1.png"/>
+<img src="figures/slink/x1.png" width="450"/>
 </td>	
 </table>
 <p style="font-size:20pt">Repeat: find minimum in matrix, connect associated clades (if not already connected)
@@ -64,13 +73,14 @@
 <section data-transition="none"><h4>Matrix => tree by single linke clustering</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> <s>2</s> </td><td>$\infty$ </td><td> 5 </td></tr>
-<tr><td>2 </td><td> - </td><td> 6 </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> 6 </td><td> - </td><td> <b>4</b> </td></tr>
-<tr><td> 5 </td><td> $\infty$ </td><td> 4 </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> <s>2</s> </td><td> 5 </td><td> x </td></tr>
+<tr><td class="label">2</td><td>2 </td><td> - </td><td> <b>4</b> </td><td> x </td></tr>
+<tr><td class="label">3</td><td> 5 </td><td> 4 </td><td> - </td><td> 6 </td></tr>
+<tr><td class="label">4</td><td> x </td><td> x </td><td> 6 </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
-<img src="figures/slink/x2.png"/>
+<img src="figures/slink/x2.png" width="450"/>
 </td>	
 </table>
 <p style="font-size:20pt">Repeat: find minimum in matrix, connect associated clades (if not already connected)
@@ -79,13 +89,14 @@
 <section data-transition="none"><h4>Matrix => tree by single linke clustering</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> <s>2</s> </td><td>$\infty$ </td><td> <s>5</s> </td></tr>
-<tr><td>2 </td><td> - </td><td> 6 </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> 6 </td><td> - </td><td> <b>4</b> </td></tr>
-<tr><td> 5 </td><td> $\infty$ </td><td> 4 </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> <s>2</s> </td><td> <s>5</s> </td><td> x </td></tr>
+<tr><td class="label">2</td><td>2 </td><td> - </td><td> 4 </td><td> x </td></tr>
+<tr><td class="label">3</td><td> 5 </td><td> 4 </td><td> - </td><td> 6 </td></tr>
+<tr><td class="label">4</td><td> x </td><td> x </td><td> 6 </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
-<img src="figures/slink/x2.png"/>
+<img src="figures/slink/x2.png" width="450"/>
 </td>	
 </table>
 <p style="font-size:20pt">Repeat: find minimum in matrix, connect associated clades (if not already connected)
@@ -94,13 +105,14 @@
 <section data-transition="none"><h4>Matrix => tree by single linke clustering</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> <s>2</s> </td><td>$\infty$ </td><td> <s>5</s> </td></tr>
-<tr><td>2 </td><td> - </td><td> <b>6</b> </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> 6 </td><td> - </td><td> <del>4</del> </td></tr>
-<tr><td> 5 </td><td> $\infty$ </td><td> 4 </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> <s>2</s> </td><td> <s>5</s> </td><td> x </td></td></tr>
+<tr><td class="label">2</td><td>2 </td><td> - </td><td> <s>4</s> </td><td> x </td></tr>
+<tr><td class="label">3</td><td> 5 </td><td> 4 </td><td> - </td><td> <b>6</b> </td></tr>
+<tr><td class="label">4</td><td> x </td><td> x </td><td> 6 </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
-<img src="figures/slink/x3.png"/>
+<img src="figures/slink/x3.png" width="450"/>
 </td>	
 </table>
 <p style="font-size:20pt">Repeat: find minimum in matrix, connect associated clades (if not already connected)
@@ -109,85 +121,139 @@
 
 
 
+<section><h4>How many trees can a matrix represent?</h4>
 
+<small>
+<table>
+<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
+<tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
+</table>
+</small>
+
+<ul>
+<li>$n$ = number of taxa
+<li>to represent all trees over n taxa requires $\frac{n(n-1)}{2}$ matrix entries
+</ul>
+</section>
 
 <section><h4>$D_1$: Cube</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> F </td><td> $\infty$ </td><td>$\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>F </td><td> - </td><td> F </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td> $\infty$ </td><td> F </td><td> - </td><td> F </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td><td> F </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td><td> F </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> F </td><td> x </td><td>x </td><td> x </td><td> x</td></tr>
+<tr><td class="label">2</td><td>F </td><td> - </td><td> F </td><td> x </td><td> x </td><td> x</td></tr>
+<tr><td class="label">3</td><td> x </td><td> F </td><td> - </td><td> F </td><td> x </td><td> x</td></tr>
+<tr><td class="label">4</td><td> x </td><td> x </td><td> F </td><td> - </td><td> F </td><td> x </td></tr>
+<tr><td class="label">5</td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td><td> F </td></tr>
+<tr><td class="label">6</td><td> x </td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
 <img src="figures/g1.dot.png"/>
 </td>
 </table>
+</section>
+
+<section><h4>How many trees can a matrix represent?</h4>
+
+<small>
+<table>
+<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
+<tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
+<tr><td>cube </td><td style="vertical-align: top;"> <img width="50" src="figures/g1.dot.png"/> </td><td> $n-1$ </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
+</table>
+</small>
 
 </section>
+
 
 <section><h4>$D_2$: Caterpillar</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>  - </td><td> F </td><td> F </td><td>F </td><td> F </td><td> F</td></tr>
-<tr><td> F </td><td> - </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td> F </td><td> $\infty$ </td><td> - </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td> F </td><td> $\infty$ </td><td> $\infty$ </td><td> - </td><td> $\infty$ </td><td> $\infty$ </td></tr>
-<tr><td> F </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> - </td><td> $\infty$ </td></tr>
-<tr><td> F </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> F </td><td> F </td><td>F </td><td> F </td><td> F</td></tr>
+<tr><td class="label">2</td><td> F </td><td> - </td><td> x </td><td> x </td><td> x </td><td> x</td></tr>
+<tr><td class="label">3</td><td> F </td><td> x </td><td> - </td><td> x </td><td> x </td><td> x</td></tr>
+<tr><td class="label">4</td><td> F </td><td> x </td><td> x </td><td> - </td><td> x </td><td> x </td></tr>
+<tr><td class="label">5</td><td> F </td><td> x </td><td> x </td><td> x </td><td> - </td><td> x </td></tr>
+<tr><td class="label">6</td><td> F </td><td> x </td><td> x </td><td> x </td><td> x </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
 <img src="figures/g2.dot.png"/>
 </td>
 </table>
-
 </section>
 
-<section><h4>$D_3$: Disconnected graph</h4>
+<section><h4>How many trees can a matrix represent?</h4>
+
+<small>
+<table>
+<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
+<tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
+<tr><td>cube </td><td style="vertical-align: top;"> <img width="50" src="figures/g1.dot.png"/> </td><td> $n-1$ </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
+<tr><td>caterpillar </td><td> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
+</table>
+</small>
+</section>
+
+<section><h4>When does a matrix represente a tree?</h4>
+
+<p>If associated adjacency graph connected
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> F </td><td> F </td><td>$\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>F </td><td> - </td><td> F </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>F </td><td> F </td><td> - </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> - </td><td> F </td><td> F </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td><td> F </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> F </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> F </td><td> F </td><td>x </td><td> x </td><td> x</td></tr>
+<tr><td class="label">2</td><td>F </td><td> - </td><td> F </td><td> x </td><td> x </td><td> x</td></tr>
+<tr><td class="label">3</td><td>F </td><td> F </td><td> - </td><td> x </td><td> x </td><td> x</td></tr>
+<tr><td class="label">4</td><td> x </td><td> x </td><td> x </td><td> - </td><td> F </td><td> F </td></tr>
+<tr><td class="label">5</td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td><td> F </td></tr>
+<tr><td class="label">6</td><td> x </td><td> x </td><td> x </td><td> F </td><td> F </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
 <img src="figures/g3.dot.png"/>
 </td>
 </table>
-
 </section>
 
 <section><h4>$D_4$: Cycle</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> F </td><td> $\infty$  </td><td>$\infty$ </td><td> $\infty$ </td><td> F</td></tr>
-<tr><td>F </td><td> - </td><td> F </td><td> $\infty$ </td><td>  $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>$\infty$ </td><td>  F </td><td> - </td><td> F </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td> $\infty$ </td><td>  $\infty$ </td><td> F </td><td> - </td><td> F </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td><td> F </td></tr>
-<tr><td> F </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> F </td><td> x  </td><td>x </td><td> x </td><td> F</td></tr>
+<tr><td class="label">2</td><td>F </td><td> - </td><td> F </td><td> x </td><td>  x </td><td> x</td></tr>
+<tr><td class="label">3</td><td>x </td><td>  F </td><td> - </td><td> F </td><td> x </td><td> x</td></tr>
+<tr><td class="label">4</td><td> x </td><td>  x </td><td> F </td><td> - </td><td> F </td><td> x </td></tr>
+<tr><td class="label">5</td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td><td> F </td></tr>
+<tr><td class="label">6</td><td> F </td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
 <img src="figures/g4.dot.png"/>
 </td>
 </table>
+</section>
 
+<section><h4>How many trees can a matrix represent?</h4>
+
+<small>
+<table>
+<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
+<tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
+<tr><td>cube </td><td style="vertical-align: top;"> <img width="50" src="figures/g1.dot.png"/> </td><td> $n-1$ </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
+<tr><td>caterpillar </td><td> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
+<tr><td>cycle </td><td> <img width="50" src="figures/g4.dot.png"/> </td><td> $n$ </td><td> $\binom{2n+1}{n+1}$?</td></tr> 
+</table>
+</small>
 </section>
 
 <section><h4>$D_5$: Double diagonal</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> F </td><td> F  </td><td>$\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>F </td><td> - </td><td> F </td><td> F </td><td>  $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>F </td><td>  F </td><td> - </td><td> F </td><td> F </td><td> $\infty$</td></tr>
-<tr><td> $\infty$ </td><td>  F </td><td> F </td><td> - </td><td> F </td><td> F </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> F </td><td> - </td><td> F </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> F </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> F </td><td> F  </td><td>x </td><td> x </td><td> x</td></tr>
+<tr><td class="label">2</td><td>F </td><td> - </td><td> F </td><td> F </td><td>  x </td><td> x</td></tr>
+<tr><td class="label">3</td><td>F </td><td>  F </td><td> - </td><td> F </td><td> F </td><td> x</td></tr>
+<tr><td class="label">4</td><td> x </td><td>  F </td><td> F </td><td> - </td><td> F </td><td> F </td></tr>
+<tr><td class="label">5</td><td> x </td><td> x </td><td> F </td><td> F </td><td> - </td><td> F </td></tr>
+<tr><td class="label">6</td><td> x </td><td> x </td><td> x </td><td> F </td><td> F </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
 <img src="figures/g5.dot.png"/>
@@ -199,12 +265,13 @@
 <section><h4>$D_6$: Double linked</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> F </td><td> F  </td><td>$\infty$ </td><td>F </td><td> F</td></tr>
-<tr><td>F </td><td> - </td><td> F </td><td> F </td><td>  $\infty$ </td><td> F</td></tr>
-<tr><td>F </td><td>  F </td><td> - </td><td> F </td><td> F </td><td> $\infty$</td></tr>
-<tr><td> $\infty$ </td><td>  F </td><td> F </td><td> - </td><td> F </td><td> F </td></tr>
-<tr><td>F </td><td> $\infty$ </td><td> F </td><td> F </td><td> - </td><td> F </td></tr>
-<tr><td>F </td><td> F </td><td> $\infty$ </td><td> F </td><td> F </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> F </td><td> F  </td><td>x </td><td>F </td><td> F</td></tr>
+<tr><td class="label">2</td><td>F </td><td> - </td><td> F </td><td> F </td><td>  x </td><td> F</td></tr>
+<tr><td class="label">3</td><td>F </td><td>  F </td><td> - </td><td> F </td><td> F </td><td> x</td></tr>
+<tr><td class="label">4</td><td> x </td><td>  F </td><td> F </td><td> - </td><td> F </td><td> F </td></tr>
+<tr><td class="label">5</td><td>F </td><td> x </td><td> F </td><td> F </td><td> - </td><td> F </td></tr>
+<tr><td class="label">6</td><td>F </td><td> F </td><td> x </td><td> F </td><td> F </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
 <img src="figures/g6.dot.png"/>
@@ -216,55 +283,40 @@
 <section><h4>$D_7$: Cycle with shortcut</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
-<tr><td>- </td><td> F </td><td> $\infty$  </td><td>F </td><td> $\infty$ </td><td> F</td></tr>
-<tr><td>F </td><td> - </td><td> F </td><td> $\infty$ </td><td>  $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>$\infty$ </td><td>  F </td><td> - </td><td> F </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>F </td><td>  $\infty$ </td><td> F </td><td> - </td><td> F </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td><td> F </td></tr>
-<tr><td> F </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td></tr>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> F </td><td> x  </td><td>F </td><td> x </td><td> F</td></tr>
+<tr><td class="label">2</td><td>F </td><td> - </td><td> F </td><td> x </td><td>  x </td><td> x</td></tr>
+<tr><td class="label">3</td><td>x </td><td>  F </td><td> - </td><td> F </td><td> x </td><td> x</td></tr>
+<tr><td class="label">4</td><td>F </td><td>  x </td><td> F </td><td> - </td><td> F </td><td> x </td></tr>
+<tr><td class="label">5</td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td><td> F </td></tr>
+<tr><td class="label">6</td><td> F </td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td></tr>
 </table>
 </td><td style="vertical-align: top;">
 <img src="figures/g7.dot.png"/>
 </td>
 </table>
 </section>
-<section><h4>When does a matrix represente a tree?</h4>
-
-<p>If associated adjacency graph connected
-
-<table><tr><td style="vertical-align: top;">
-<table>
-<tr><td>- </td><td> F </td><td> $\infty$ </td><td>$\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td>F </td><td> - </td><td> F </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td> $\infty$ </td><td> F </td><td> - </td><td> F </td><td> $\infty$ </td><td> $\infty$</td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td><td> F </td><td> $\infty$ </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td><td> F </td></tr>
-<tr><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> $\infty$ </td><td> F </td><td> - </td></tr>
-</table>
-</td><td style="vertical-align: top;">
-<img src="figures/g1.dot.png"/>
-</td>
-</table>
-
-</section>
 
 <section><h4>How many trees can a matrix represent?</h4>
 
-
+<small>
 <table>
 <tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
-<tr><td>full </td><td> </td><td> n(n-1)/2 </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
-<tr><td>cube </td><td> $D_1$ </td><td> n-1 </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
-<tr><td>caterpillar </td><td> $D_2$ </td><td> n-1 </td><td> $n!$</td></tr> 
-<tr><td>cycle </td><td> $D_4$ </td><td> n </td><td> $\binom{2n+1}{n+1}$?</td></tr> 
-<tr><td>cycleWithShortCut </td><td> $D_7$ </td><td> n+1 </td><td> ?</td></tr> 
-<tr><td>doubleDiagonal </td><td> $D_5$ </td><td> 2n-3 </td><td> ?</td></tr> 
-<tr><td>doubleLinked </td><td> $D_6$ </td><td> 2n </td><td> ?</td></tr> 
+<tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
+<tr><td>cube </td><td style="vertical-align: top;"> <img width="50" src="figures/g1.dot.png"/> </td><td> $n-1$ </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
+<tr><td>caterpillar </td><td> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
+<tr><td>cycle </td><td> <img width="50" src="figures/g4.dot.png"/> </td><td> $n$ </td><td> $\binom{2n+1}{n+1}$?</td></tr> 
+<tr><td>cycle with shortcut </td><td> <img width="50" src="figures/g7.dot.png"/> </td><td> $n+1$ </td><td> ?</td></tr> 
+<tr><td>double diagonal </td><td> <img width="50" src="figures/g5.dot.png"/> </td><td> $2n-3$ </td><td> ?</td></tr> 
+<tr><td>double linked </td><td> <img width="50" src="figures/g6.dot.png"/> </td><td> $2n$ </td><td> ?</td></tr> 
 </table>
+</small>
 </section>
 
 <section><h4>How many trees can a matrix represent?</h4>
 <img src="figures/diff/grapg.png"/>
+
+<p>Number of trees vs number of taxa
 </section>
 
 
@@ -324,7 +376,7 @@
 
 </section>
 
-<section><h3>Applications</h3>
+<section><h4>Applications</h4>
 <ul>
 <li>Guide distribution for MCMC proposals
 <li>Importance distribution for generalised stepping stone/nested sampling
@@ -334,7 +386,7 @@
 </section>
 
 
-<section><h3>Summary</h3>
+<section><h4>Summary</h4>
 
 <p>Matrix distributions:
 <ul>
@@ -346,7 +398,9 @@
 
 <p>To do:
 <ul>
-<li>find efficient ways to infer matrix distr from sequence data
+<li>proof number of trees for different adjacency graphs
+<li>explore other adjacency graphs
+<li>find ways to infer matrix distr from sequence data
 <li>integrate in applications
 <li>...
 </ul>
@@ -387,3 +441,33 @@
 </script>
 	</body>
 </html>
+<!--
+
+	2 Matrix => tree by single linke clustering
+	  Matrix => tree by single linke clustering
+	  Matrix => tree by single linke clustering
+	  Matrix => tree by single linke clustering
+	  Matrix => tree by single linke clustering
+2	1 How many trees can a matrix represent?
+3	1 $D_1$: Cube
+	  How many trees can a matrix represent?
+4	2 $D_2$: Caterpillar
+	  How many trees can a matrix represent?
+6	2 When does a matrix represente a tree?
+8	1 $D_4$: Cycle
+	  How many trees can a matrix represent?
+9	1 $D_5$: Double diagonal
+	  $D_6$: Double linked
+	  $D_7$: Cycle with shortcut
+10	1 How many trees can a matrix represent?
+12	2 How many trees can a matrix represent?
+11	1 The kind of graph to hope for
+12	2 Tree set => matrix => tree set
+13	1 Example: Indo European languages -- input
+	  Example: Indo European languages -- output
+15	2 Example: Indo European languages -- difference
+16	1  Example: Indo European languages -- difference
+17	1  Example: Indo European languages -- difference
+18	1  Applications
+20	2  Summary
+-->
