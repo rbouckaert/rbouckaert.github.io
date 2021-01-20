@@ -17,6 +17,7 @@
 <style>	
 .reveal section img { background:none; border: 1px solid #eeeeee; box-shadow:none; }
 .label {border-right: 2px solid black; color:blue	}
+.timg {vertical-align: top;}
 </style>
 
 		<!-- Printing and PDF exports -->
@@ -123,12 +124,10 @@
 
 <section><h4>How many trees can a matrix represent?</h4>
 
-<small>
 <table>
-<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
+<tr style="border-bottom: 1px solid black;"><td> matrix </td><td> </td><td> #parameters </td><td> #trees </td></tr>
 <tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
 </table>
-</small>
 
 <ul>
 <li>$n$ = number of taxa
@@ -136,7 +135,7 @@
 </ul>
 </section>
 
-<section><h4>$D_1$: Cube</h4>
+<section><h4>Cube</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
 <tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
@@ -153,20 +152,20 @@
 </table>
 </section>
 
-<section><h4>How many trees can a matrix represent?</h4>
+<section><h4>How many trees can a matrix represent (II)?</h4>
 
-<small>
+<table><td>
 <table>
-<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
-<tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
+<tr style="border-bottom: 1px solid black;"><td> matrix </td><td> </td><td> #parameters </td><td> #trees </td></tr>
+<tr><td>full </td><td > </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
 <tr><td>cube </td><td style="vertical-align: top;"> <img width="50" src="figures/g1.dot.png"/> </td><td> $n-1$ </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
 </table>
-</small>
+</td></table>
 
 </section>
 
 
-<section><h4>$D_2$: Caterpillar</h4>
+<section><h4>Caterpillar</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
 <tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
@@ -183,16 +182,16 @@
 </table>
 </section>
 
-<section><h4>How many trees can a matrix represent?</h4>
+<section><h4>How many trees can a matrix represent (III)?</h4>
 
-<small>
+<table><td>
 <table>
-<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
+<tr style="border-bottom: 1px solid black;"><td> matrix </td><td> </td><td> #parameters </td><td> #trees </td></tr>
 <tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
 <tr><td>cube </td><td style="vertical-align: top;"> <img width="50" src="figures/g1.dot.png"/> </td><td> $n-1$ </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
-<tr><td>caterpillar </td><td> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
+<tr><td>caterpillar </td><td style="vertical-align: top;"> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
 </table>
-</small>
+</td></table>
 </section>
 
 <section><h4>When does a matrix represente a tree?</h4>
@@ -214,7 +213,7 @@
 </table>
 </section>
 
-<section><h4>$D_4$: Cycle</h4>
+<section><h4>Cycle</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
 <tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
@@ -231,20 +230,37 @@
 </table>
 </section>
 
-<section><h4>How many trees can a matrix represent?</h4>
+<section><h4>How many trees can a matrix represent (IV)?</h4>
 
-<small>
+<table><td>
 <table>
-<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
+<tr style="border-bottom: 1px solid black;"><td> matrix </td><td> </td><td> #parameters </td><td> #trees </td></tr>
 <tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
 <tr><td>cube </td><td style="vertical-align: top;"> <img width="50" src="figures/g1.dot.png"/> </td><td> $n-1$ </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
-<tr><td>caterpillar </td><td> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
-<tr><td>cycle </td><td> <img width="50" src="figures/g4.dot.png"/> </td><td> $n$ </td><td> $\binom{2n+1}{n+1}$?</td></tr> 
+<tr><td>caterpillar </td><td style="vertical-align: top;"> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
+<tr><td>cycle </td><td style="vertical-align: top;"> <img width="50" src="figures/g4.dot.png"/> </td><td> $n$ </td><td> $\binom{2n+1}{n+1}$?</td></tr> 
 </table>
-</small>
+</td></table>
 </section>
 
-<section><h4>$D_5$: Double diagonal</h4>
+<section><h4>Cycle with shortcut</h4>
+<table><tr><td style="vertical-align: top;">
+<table>
+<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
+<tr><td class="label">1</td><td>- </td><td> F </td><td> x  </td><td>F </td><td> x </td><td> F</td></tr>
+<tr><td class="label">2</td><td>F </td><td> - </td><td> F </td><td> x </td><td>  x </td><td> x</td></tr>
+<tr><td class="label">3</td><td>x </td><td>  F </td><td> - </td><td> F </td><td> x </td><td> x</td></tr>
+<tr><td class="label">4</td><td>F </td><td>  x </td><td> F </td><td> - </td><td> F </td><td> x </td></tr>
+<tr><td class="label">5</td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td><td> F </td></tr>
+<tr><td class="label">6</td><td> F </td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td></tr>
+</table>
+</td><td style="vertical-align: top;">
+<img src="figures/g7.dot.png"/>
+</td>
+</table>
+</section>
+
+<section><h4>Double diagonal</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
 <tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
@@ -262,7 +278,7 @@
 
 </section>
 
-<section><h4>$D_6$: Double linked</h4>
+<section><h4>Double linked</h4>
 <table><tr><td style="vertical-align: top;">
 <table>
 <tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
@@ -277,43 +293,27 @@
 <img src="figures/g6.dot.png"/>
 </td>
 </table>
-
 </section>
 
-<section><h4>$D_7$: Cycle with shortcut</h4>
-<table><tr><td style="vertical-align: top;">
-<table>
-<tr style="border-bottom: 1px solid black;"><td></td><td class="label">1 </td><td class="label"> 2 </td><td class="label">3 </td><td class="label"> 4 </td><td class="label">5 </td><td class="label"> 6 </td></tr>
-<tr><td class="label">1</td><td>- </td><td> F </td><td> x  </td><td>F </td><td> x </td><td> F</td></tr>
-<tr><td class="label">2</td><td>F </td><td> - </td><td> F </td><td> x </td><td>  x </td><td> x</td></tr>
-<tr><td class="label">3</td><td>x </td><td>  F </td><td> - </td><td> F </td><td> x </td><td> x</td></tr>
-<tr><td class="label">4</td><td>F </td><td>  x </td><td> F </td><td> - </td><td> F </td><td> x </td></tr>
-<tr><td class="label">5</td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td><td> F </td></tr>
-<tr><td class="label">6</td><td> F </td><td> x </td><td> x </td><td> x </td><td> F </td><td> - </td></tr>
-</table>
-</td><td style="vertical-align: top;">
-<img src="figures/g7.dot.png"/>
-</td>
-</table>
-</section>
 
-<section><h4>How many trees can a matrix represent?</h4>
+<section><h4>How many trees can a matrix represent (V)?</h4>
 
 <small>
+<table><td>
 <table>
-<tr><td>matrix </td><td> </td><td> #parameters </td><td>#trees</td></tr>
+<tr style="border-bottom: 1px solid black;"><td> matrix </td><td> </td><td> #parameters </td><td> #trees </td></tr>
 <tr><td>full </td><td> </td><td> $n(n-1)/2$ </td><td>$\prod_{i=2}^n(2i-3)$</td></tr>
 <tr><td>cube </td><td style="vertical-align: top;"> <img width="50" src="figures/g1.dot.png"/> </td><td> $n-1$ </td><td> $C_n=\frac{1}{n+1}\binom{2n}{n}$</td></tr> 
-<tr><td>caterpillar </td><td> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
-<tr><td>cycle </td><td> <img width="50" src="figures/g4.dot.png"/> </td><td> $n$ </td><td> $\binom{2n+1}{n+1}$?</td></tr> 
-<tr><td>cycle with shortcut </td><td> <img width="50" src="figures/g7.dot.png"/> </td><td> $n+1$ </td><td> ?</td></tr> 
-<tr><td>double diagonal </td><td> <img width="50" src="figures/g5.dot.png"/> </td><td> $2n-3$ </td><td> ?</td></tr> 
-<tr><td>double linked </td><td> <img width="50" src="figures/g6.dot.png"/> </td><td> $2n$ </td><td> ?</td></tr> 
+<tr><td>caterpillar </td><td style="vertical-align: top;"> <img width="50" src="figures/g2.dot.png"/> </td><td> $n-1$ </td><td> $n!$</td></tr> 
+<tr><td>cycle </td><td style="vertical-align: top;"> <img width="50" src="figures/g4.dot.png"/> </td><td> $n$ </td><td> $\binom{2n+1}{n+1}$?</td></tr> 
+<tr><td>cycle with shortcut </td><td style="vertical-align: top;"> <img width="50" src="figures/g7.dot.png"/> </td><td> $n+1$ </td><td> ?</td></tr> 
+<tr><td>double diagonal </td><td style="vertical-align: top;"> <img width="50" src="figures/g5.dot.png"/> </td><td> $2n-3$ </td><td> ?</td></tr> 
+<tr><td>double linked </td><td style="vertical-align: top;"> <img width="50" src="figures/g6.dot.png"/> </td><td> $2n$ </td><td> ?</td></tr> 
 </table>
-</small>
+</td></table></small>
 </section>
 
-<section><h4>How many trees can a matrix represent?</h4>
+<section><h4>How many trees can a matrix represent (VI)?</h4>
 <img src="figures/diff/grapg.png"/>
 
 <p>Number of trees vs number of taxa
@@ -361,14 +361,14 @@
 <p> uncorrelated:  $\Sigma$ diagonal matrix
 </section>
 
-<section data-transition="none"><h4>Example: Indo European languages -- difference</h4>
+<section data-transition="none"><h4>Example: Indo European languages -- difference (II)</h4>
   <img src="figures/diff/diff-ie2.png" width="600" height="550">
   
 <p> correlated:  $\Sigma$ full matrix
 </section>
 
 
-<section data-transition="none"><h4>Example: Indo European languages -- difference</h4>
+<section data-transition="none"><h4>Example: Indo European languages -- difference (III)</h4>
   <img src="figures/diff/diff-ie-mono.png" width="600" height="550">
   
 <p> correlated + monophyletic constraints
@@ -449,16 +449,16 @@
 	  Matrix => tree by single linke clustering
 	  Matrix => tree by single linke clustering
 2	1 How many trees can a matrix represent?
-3	1 $D_1$: Cube
+3	1 Cube
 	  How many trees can a matrix represent?
-4	2 $D_2$: Caterpillar
+4	2 Caterpillar
 	  How many trees can a matrix represent?
 6	2 When does a matrix represente a tree?
-8	1 $D_4$: Cycle
+8	1 Cycle
 	  How many trees can a matrix represent?
-9	1 $D_5$: Double diagonal
-	  $D_6$: Double linked
-	  $D_7$: Cycle with shortcut
+9	1 Cycle with shortcut
+	  Double diagonal
+	  Double linked
 10	1 How many trees can a matrix represent?
 12	2 How many trees can a matrix represent?
 11	1 The kind of graph to hope for
