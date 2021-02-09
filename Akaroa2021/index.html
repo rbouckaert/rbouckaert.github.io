@@ -455,10 +455,10 @@
 </section>
 
 <section data-transition="none"><h4>Example: Indo European languages -- input</h4>
-  <img src="figures/densitree-in.png" width="850" height="600">
+  <img src="figures/densitree-out.png" width="850" height="600">
 </section>
 <section data-transition="none"><h4>Example: Indo European languages -- output</h4>
-  <img src="figures/densitree-out.png" width="850" height="600">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <img src="figures/densitree-in.png" width="760" height="600">
 </section>
 
 <section data-transition="none"><h4>Example: Indo European languages -- difference</h4>
@@ -512,10 +512,11 @@
 <li>...
 </ul>
 
-<p>To do:
+<br>To do:
 <ul>
 <li>Proof number of trees for different adjacency graphs
 <li>Explore other adjacency graphs
+<li>Quantitative measure of distance of tree distributions 
 <li>Cube finder
 <li>Find ways to infer matrix distr from sequence data
 <li>Integrate in applications
@@ -548,7 +549,7 @@
 <script>
   Reveal.initialize({
     math: {
-      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+      mathjax: 'lib/MathJax.js',
       config: 'TeX-AMS_HTML-full',
       // pass other options into `MathJax.Hub.Config()`
       TeX: { Macros: { RR: "{\\bf R}" } }
@@ -556,6 +557,9 @@
     plugins: [ RevealMath ]
   });
 </script>
+<!--
+//      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+-->
 	</body>
 </html>
 <!--
