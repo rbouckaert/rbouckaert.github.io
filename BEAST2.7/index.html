@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>BEAST 2.7</title>
+
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+				
+				<div style="font-size:80pt">BEAST 2.7</div>
+				<h3>Wishlist for new BEAST release</h3>
+				<p><center>Remco Bouckaert</center></p>
+				</section>
+
+<section>
+<h2>Package management</h2>
+
+modules + java 11
+<ul>
+<li>+ cleaner code/less chance of breaking when changing
+<li>+ better class finding performance
+<li>- breaks lots of packages
+</ul>
+</section>
+
+
+<section><h2>BEAST 2.7</h2>
+
+<ul>
+<li>Reorganisee packages
+<li>- BEAST core = package manager only
+<li>- break up BEAST + BEASTLabs + BEAST-classic into
+<ul>
+	<li>- BEAUti module
+	<li>- evolution module
+<ul>
+		<li>- merge Bactrian operators
+</ul>
+	<li>- math module
+	<li>- application module for applauncher apps
+<ul>
+		<li>- refactor logcombiner, treeannotator, etc as Runnable?
+</ul>
+	<li>- inference module
+	<li>- utils module
+	<li>- deprecated moduls, e.g. sb1
+</ul>
+
+</section>
+
+
+<section><h2>BEAST 2.7</h2>
+Initialiser<p>
+<ul>
+<li>- set clock rate so that rate * tree height = 0.5
+</ul>
+</section>
+
+
+<section><h2>BEAST 2.7</h2>
+Taxon sets<p>
+<ul>
+<li>- sort alphabetically
+</ul>
+
+</section>
+
+
+<section><h2>BEAUti 2.7</h2>
+
+Add BEAST AI<p>
+<ul>
+<li>- interactive guidance in selecting models/setting priors
+</ul>
+
+Add methods section
+
+
+</section>
+
+
+<section><h2>BEAUti defaults:</h2>
+
+
+Inference<p>
+<ul>
+<li>- MCMC, lean but less efficient posterior exploration
+<li>- MC3, exploits multi (4) cores, more efficient posterior exploration
+<li>- 2xMC3+auto stopping, exploits 8 cores, stopping criteria open problem
+<li>- NS
+</ul>
+</section>
+
+
+<section><h2>BEAUti defaults:</h2>
+Operators<p>
+<ul>
+<li>- Default to Bactrian versions -- requires wcss
+<li>- AVMN for site models -- requires wcss
+<li>- learn from Jordan's experiments
+</ul>
+
+</section>
+
+
+<section><h2>BEAUti defaults:</h2>
+Priors<p>
+<ul>
+<li>- review all default priors, remove improper ones
+<li>- Dirichlet(4,4,4,4) on frequencies
+</ul>
+</section>
+
+
+<section><h2>BEAUti defaults:</h2>
+Logging<p>
+<ul>
+<li>- TreeStatLogger deprecate TreeHeightLogger
+<li>- Tree distance logger for Tree-ESS
+</ul>
+</section>
+
+
+<section><h2>BEAUti defaults:</h2>
+Operator schedule<p>
+<ul>
+<li>- non static
+</ul>
+</section>
+
+
+<section><h2>BEAUti defaults models</h2>
+
+<ul>
+<li>	Site models
+<ul>
+<li>	- bModelTest/OBAMA/Gamma site model
+</ul>
+<li>	Clock models
+<ul>
+<li>	- strict/ORC/RLC
+</ul>
+<li>	Tree priors
+<ul>
+<li>	- biceps
+<li>	- mascot
+<li>	- bdmm
+</ul>
+<li>	Phylogeography
+<ul>
+<li>	- on sphere
+</ul>
+<li>	MSC
+<li>	- sb3
+<li>	- snapper
+</ul>
+</ul>
+</section>
+
+
+<section><h2>BEAST 2.7</h2>
+
+Questions?</p>
+
+Suggestions?</p>
+</section>
+
+
+				</div>
+		</div>
+
+		<script src="../reveal.js-3.3.0/lib/js/head.min.js"></script>
+		<script src="../reveal.js-3.3.0/js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '../reveal.js-3.3.0/plugin/markdown/marked.js' },
+					{ src: '../reveal.js-3.3.0/plugin/markdown/markdown.js' },
+					{ src: '../reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+					{ src: '../reveal.js-3.3.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
