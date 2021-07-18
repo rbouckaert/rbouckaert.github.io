@@ -20,6 +20,7 @@
 			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
+
 	</head>
 	<body>
 		<div class="reveal">
@@ -38,31 +39,39 @@ modules + java 11
 <ul>
 <li>+ cleaner code/less chance of breaking when changing
 <li>+ better class finding performance
+<li>+ opportunity to reorganise packages
 <li>- breaks lots of packages
 </ul>
+
+<p>maven for package mgmt?
+<ul>
+<li>+ more stable than github release area
+<li>- lots of conventions to learn
+</ul>
+
 </section>
 
 
 <section><h2>BEAST 2.7</h2>
 
 <ul>
-<li>Reorganisee packages
-<li>- BEAST core = package manager only
-<li>- break up BEAST + BEASTLabs + BEAST-classic into
+<li>Reorganise packages
+<li> BEAST core = package manager only
+<li> break up BEAST + BEASTLabs + BEAST-classic into
 <ul>
-	<li>- BEAUti module
-	<li>- evolution module
+	<li> BEAUti module
+	<li> evolution module
 <ul>
-		<li>- merge Bactrian operators
+		<li> merge Bactrian operators
 </ul>
-	<li>- math module
-	<li>- application module for applauncher apps
+	<li> math module
+	<li> application module for applauncher apps
 <ul>
-		<li>- refactor logcombiner, treeannotator, etc as Runnable?
+		<li> refactor logcombiner, treeannotator, etc as Runnable?
 </ul>
-	<li>- inference module
-	<li>- utils module
-	<li>- deprecated moduls, e.g. sb1
+	<li> inference module
+	<li> utils module
+	<li> deprecated modules, e.g. sb1
 </ul>
 
 </section>
@@ -71,15 +80,13 @@ modules + java 11
 <section><h2>BEAST 2.7</h2>
 Initialiser<p>
 <ul>
-<li>- set clock rate so that rate * tree height = 0.5
+<li>set clock rate so that rate * tree height = 0.5
 </ul>
-</section>
 
 
-<section><h2>BEAST 2.7</h2>
-Taxon sets<p>
+<p><p>Taxon sets<p>
 <ul>
-<li>- sort alphabetically
+<li>sort alphabetically
 </ul>
 
 </section>
@@ -87,12 +94,15 @@ Taxon sets<p>
 
 <section><h2>BEAUti 2.7</h2>
 
-Add BEAST AI<p>
+<p>Add BEAST AI<p>
 <ul>
-<li>- interactive guidance in selecting models/setting priors
+<li>interactive guidance in selecting models/setting priors
 </ul>
 
-Add methods section
+
+<img src="https://raw.githubusercontent.com/rbouckaert/beasy/master/decisiongraphs/figures/devguide.svg"/>
+
+<p>Add method section generator
 
 
 </section>
@@ -103,10 +113,10 @@ Add methods section
 
 Inference<p>
 <ul>
-<li>- MCMC, lean but less efficient posterior exploration
-<li>- MC3, exploits multi (4) cores, more efficient posterior exploration
-<li>- 2xMC3+auto stopping, exploits 8 cores, stopping criteria open problem
-<li>- NS
+<li> MCMC, lean but less efficient posterior exploration
+<li> MC3, exploits multi (4) cores, more efficient posterior exploration
+<li> 2xMC3+auto stopping, exploits 8 cores, stopping criteria open problem
+<li> NS
 </ul>
 </section>
 
@@ -114,9 +124,10 @@ Inference<p>
 <section><h2>BEAUti defaults:</h2>
 Operators<p>
 <ul>
-<li>- Default to Bactrian versions -- requires wcss
-<li>- AVMN for site models -- requires wcss
-<li>- learn from Jordan's experiments
+<li> Default to Bactrian versions -- requires wcss
+<li> AVMN for site models -- requires wcss
+<li> Add tree stretcher + epoch flexer
+<li> Add adaptive operator samplers for each partition
 </ul>
 
 </section>
@@ -125,8 +136,9 @@ Operators<p>
 <section><h2>BEAUti defaults:</h2>
 Priors<p>
 <ul>
-<li>- review all default priors, remove improper ones
-<li>- Dirichlet(4,4,4,4) on frequencies
+<li> Review all default priors, remove improper ones
+<li> Dirichlet(4,4,4,4) on frequencies
+<li> Lower bound on gamma shape (0.1?)
 </ul>
 </section>
 
@@ -134,8 +146,8 @@ Priors<p>
 <section><h2>BEAUti defaults:</h2>
 Logging<p>
 <ul>
-<li>- TreeStatLogger deprecate TreeHeightLogger
-<li>- Tree distance logger for Tree-ESS
+<li> TreeStatLogger deprecate TreeHeightLogger
+<li> Tree distance logger for Tree-ESS
 </ul>
 </section>
 
@@ -143,7 +155,9 @@ Logging<p>
 <section><h2>BEAUti defaults:</h2>
 Operator schedule<p>
 <ul>
-<li>- non static
+<li>Non static weights
+<li>Stratification?
+<li>Learn from Jordan's experiments
 </ul>
 </section>
 
@@ -153,25 +167,25 @@ Operator schedule<p>
 <ul>
 <li>	Site models
 <ul>
-<li>	- bModelTest/OBAMA/Gamma site model
+<li>	 bModelTest/OBAMA/Gamma site model
 </ul>
 <li>	Clock models
 <ul>
-<li>	- strict/ORC/RLC
+<li>	 strict/ORC/RLC
 </ul>
 <li>	Tree priors
 <ul>
-<li>	- biceps
-<li>	- mascot
-<li>	- bdmm
+<li>	 BICEPS
+<li>	 MASCOT
+<li>	 BDSKY
 </ul>
 <li>	Phylogeography
 <ul>
-<li>	- on sphere
+<li>	 on sphere
 </ul>
 <li>	MSC
-<li>	- sb3
-<li>	- snapper
+<li>	 SB3
+<li>	 snapper
 </ul>
 </ul>
 </section>
