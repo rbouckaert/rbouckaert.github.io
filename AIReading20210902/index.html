@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Common pitfalls</title>
+
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+<!--
+.reveal section img { background:none; border:none; box-shadow:none; }
+-->
+<style>	
+.reveal section img { background:none; border: 1px solid #eeeeee; box-shadow:none; }
+.label {border-right: 2px solid black; color:blue	}
+.timg {vertical-align: top;}
+</style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+				<a href="https://www.nature.com/articles/s42256-021-00307-0.pdf">
+				<img src='titlepage.png'/>
+				</a>
+				<p>AI Reading Group 2/9/2021</p>
+				</section>
+
+<section data-transition="none"><h4>Reading more about COVID</h4>
+				<img src='LitCovid.png'/>
+				
+				<p>ca. 2000 new papers per week				
+				<p>&gt; 160k total
+				<p><a href="https://www.medrxiv.org/content/10.1101/2020.08.04.20168518.full.pdf">I</a> <a href="https://wwwnc.cdc.gov/eid/article/27/9/21-1097">am</a> <a href="https://www.biorxiv.org/content/10.1101/2021.06.28.450225v1">contributing</a>...
+				<p><small>LitCovid: <a href='https://www.ncbi.nlm.nih.gov/research/coronavirus/'>https://www.ncbi.nlm.nih.gov/research/coronavirus/</a>	</small>
+				
+</section>
+
+<section data-transition="none"><h4>Meta-machine learning opportunities</h4>
+<small>
+<ul>
+<li>
+Shi, F. et al. Review of artificial intelligence techniques in imaging data 
+acquisition, segmentation and diagnosis for COVID-19. IEEE  Rev.  Biomed.  
+Eng. 14, 4–15 (2021) <a href="http://doi.org/10.1109/RBME.2020.2987975">doi:10.1109/RBME.2020.2987975</a>. <span style="color:blue">513 citations</a>
+<b>"Deep learning has become the dominant approach in fighting against COVID-19."</b>
+<li class="fragment">
+Wynants, L. et al. Prediction models for diagnosis and prognosis of covid-19:  
+systematic review and critical appraisal, 31 March 2020, BMJ
+<a href="http://dx.doi.org/10.1136/bmj.m1328">doi:BMJ 2020;369:m1328</a> <span style="color:blue">1347 citations</a>
+<b>"...all pubished prediction models are poorly reported, and at high risk of bias such that their reported predictive performance is probably optimistic."</b>
+<li class="fragment">
+Alabool, H. et al. Artificial intelligence techniques for containment 
+COVID-19 pandemic: a systematic review. Res.  Sq. 
+<a href="https://doi.org/10.21203/rs.3.rs-30432/v1">doi:10.21203/rs.3.rs-30432</a> (2020). <span style="color:blue">4 citations</a>
+<b>"To be accepted in the real world, these studies should increase the performance ..."</b>
+<li class="fragment">
+Albahri, O. S. et al. Systematic review of artificial intelligence techniques in 
+the detection and classification of COVID-19 medical images in terms of 
+evaluation and benchmarking: taxonomy analysis, challenges, future solutions and methodological aspects. 
+J.  Infect.  Public  Health <a href="https://doi.org/10.1016/j.jiph.2020.06.028">doi:10.1016/j.jiph.2020.06.028</a> (2020). <span style="color:blue">78 citations</a>
+<b>"...this study proved that the process of evaluating and benchmarking of AI classification techniques... is a critical gap of related literature"</b> (of COVID medical image classification papers)
+<!--
+<li>Data science and AI  in the age of COVID-19 <a href="https://www.turing.ac.uk/sites/default/files/2021-06/data-science-and-ai-in-the-age-of-covid_full-report_2.pdf">Alan Turing Institute</a>
+<li>Hundreds of AI tools have been built to catch covid. None of them helped. <a href="https://www.technologyreview.com/2021/07/30/1030329/machine-learning-ai-failed-covid-hospital-diagnosis-pandemic/">MIT Technology Review</a></li>
+-->
+<li class="fragment">
+Roberts, M. et al. Common pitfalls and recommendations for using 
+machine learning to detect and prognosticate for 
+COVID-19 using chest radiographs and CT scans, Nature Machine Intelligence, 2021 <a href="https://doi.org/10.1038/s42256-021-00307-0">doi:10.1038/s42256-021-00307-0</a>  <span style="color:blue">56 citations</a>
+</ul>
+</small>
+</section>
+
+
+<section data-transition="none"><h4>My interest: Developing new methods for phylogentics</h4>
+<table>
+<td>
+<img width="700px" src="https://github.com/rbouckaert/DeveloperManual/raw/master/figures/operatorTest.png">
+</td>
+<td style="vertical-align:top">
+<img width="500px" src="https://github.com/rbouckaert/DeveloperManual/raw/master/figures/bargraph-ok-strong.png">
+<img width="500px" src="https://github.com/rbouckaert/DeveloperManual/raw/master/figures/bargraph-ok-weak.png">
+</td>
+<td style="vertical-align:top">
+<img width="300px" src="https://github.com/rbouckaert/DeveloperManual/raw/master/figures/bargraph-over.png">
+<a href="https://github.com/rbouckaert/DeveloperManual">BEAST developer guide</a>
+<p>Tools for developing models
+<p>Open source => replicable</td>
+</table>
+
+
+</section>
+
+<section data-transition="none"><h4>Noticeable in this <a href="https://www.nature.com/articles/s42256-021-00307-0.pdf">paper</a></h4>
+
+				
+
+<ul>
+<li>Is a CT scan/X-ray really more available than a PCR test? What were they thinking?
+<li class="fragment">Checklists already exists (CLAIM, RQS) but are not used</li>
+<li class="fragment">(AI) research mostly useless (academic careers exempted)</li>
+<li class="fragment">Need to know about data => team required</li>
+</ul>
+</section>
+
+				</div>
+		</div>
+
+		<script src="../reveal.js-3.3.0/lib/js/head.min.js"></script>
+		<script src="../reveal.js-3.3.0/js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '../reveal.js-3.3.0/plugin/markdown/marked.js' },
+					{ src: '../reveal.js-3.3.0/plugin/markdown/markdown.js' },
+					{ src: '../reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+					{ src: '../reveal.js-3.3.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+		<script src="../reveal.js-3.3.0/plugin/math/math.js"></script>
+<script>
+  Reveal.initialize({
+    math: {
+      mathjax: 'lib/MathJax.js',
+      config: 'TeX-AMS_HTML-full',
+      // pass other options into `MathJax.Hub.Config()`
+      TeX: { Macros: { RR: "{\\bf R}" } }
+    },
+    plugins: [ RevealMath ]
+  });
+</script>
+<!--
+//      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+-->
+	</body>
+</html>
