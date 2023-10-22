@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Models for amino acid evolution</title>
+
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+				
+				<div style="font-size:80pt">Models for protein evolution</div>
+				
+				<p><center>Australasian Structural Phylogenetics Meeting 2023</center></p>
+				<p><center>Remco Bouckaert</center></p>
+				</section>
+
+<section style="font-size:20pt">
+<h3>The problem</h3>
+<ul>
+<li> Given a sequence alignment $D$, what can we say about its evolutionary history
+<li> Tree model $T$ represent evolution through time
+</ul>
+<img width="100%" src="alignment0.png" style="border:0px"/>
+<ul>
+<li class="fragment">Assume sites $D=\{s_1,\ldots,s_k\}$ are independent: $P(D|T)=\prod_{i} P(s_i|T)$
+<li class="fragment">Felsenstein's likelihood: 
+	<br>$P(s_i|T)=\sum_{x_j}P(x_{j,root}|T)\prod_{j}P(x_j|x_{\pi(x_j)},T)$
+	<div class="fragment">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;$=\sum_{x_j}P(x_{j,root})\prod_{j}P(x_j|x_{\pi(x_j)},t_j)$
+	<br> where $t_j$ the branch length of node $x_j$
+	</div>
+</ul>
+
+</section>
+
+<section>
+<h2>How sequences evolve</h2>
+Instanteneous $20\times20$ rate matrix
+<table><tr><td><table>
+<tr><td></td><td style="border-left: 2px solid;">$- $</td><td>$ r_{1,2} $</td><td>$ r_{1,3} $</td><td>$ \ldots $</td><td style="border-right: 2px solid;">$r_{1,20}$</td></tr>
+<tr><td></td><td style="border-left: 2px solid;">$r_{1,2}  $</td><td>$ - $</td><td>$ r_{2,3} $</td><td>$  \ldots $</td><td style="border-right: 2px solid;">$r_{2,20}$</td></tr>
+<tr><td> $R =$ </td><td style="border-left: 2px solid;">$\ldots $</td><td>$ $</td><td>$ $</td><td>$ $</td><td style="border-right: 2px solid;">$ \ldots$</td></tr>
+<tr><td></td><td style="border-left: 2px solid;">$\ldots $</td><td>$ $</td><td>$ $</td><td>$ $</td><td style="border-right: 2px solid;">$ \ldots$</td></tr>
+<tr><td></td><td style="border-left: 2px solid;">$r_{1,20}  $</td><td>$ r_{2,20} $</td><td>$ $</td><td>$ \ldots $</td><td style="border-right: 2px solid;">$ - $</td></tr>
+</table>
+</td></tr>
+</table>
+
+Symmetric, diagonal = -sum of other elements in row
+
+<div class="fragment">
+Frequencies $\pi = \{\pi_1,\ldots,\pi_{20}\}$
+
+<br>$Q = R\times \pi$
+</div>
+<div class="fragment">
+Transition probabilities: $P(t) = e^{-Qt}$
+</div>
+</section>
+
+<section>
+<h2>How sequences evolve</h2>
+
+<center>
+<img width="50%" src="transitionprobs.png" style="border:0px"/>
+<br>time $t$ -->
+<br><div class="fragment">$p(x_{j,root}) = \pi_j$</div>
+<div style="transform: matrix(0,-1,1,0,-300,-400);">transition probs $p(x_j|x_i,t)$</div>
+<div style="transform: matrix(0,-1,1,0,300,-400);">root frequencies $\pi_j$</div>
+</center>
+
+<!-->
+-->
+</section>
+
+
+<section>
+<h2>Empirical models</h2>
+Define rate matrix $R$ and frequencies $\pi$
+<br >
+<ul style="font-size:18pt">
+<li>Blosum62
+<li>CpREV
+<li>DCMut
+<li>Dayhoff
+<li>FLU
+<li>HIVb
+<li>HIVw
+<li>JTT
+<li>LG
+<li>MtArt
+<li>MtREV
+<li>MtMam
+<li>RtREV
+<li>VT
+<li>WAG
+<li>$\ldots$
+</ul>
+
+</section>
+
+
+<section>
+<h2>Frequencies </h2>
+
+$p(x_{j,root}) = \pi_j$
+<ul>
+<li>From empirical model
+<li>All equal
+<li>Estimated from alignment, fixed through MCMC
+<li>Estimated during MCMC
+</ul>
+</section>
+
+<section>
+<h3>Site rate variation</h3>
+<div style="font-size:20pt">Rates of evolution differs at different sites</div>
+<center><img width="50%" src="alignment.png" style="border:0px"/></center>
+<div class="fragment" style="font-size:20pt">Use mixture model to capture this
+<center><img width="80%" src="gammarates.png" style="border:0px"/></center>
+</div>
+</section>
+
+<section>
+<h3>Gamma site rate heterogeneity</h3>
+<div style="font-size:20pt">Usually 4 categories</div>
+<div style="font-size:20pt">Rates quantiles from discretised gamma distribution $\Gamma(\alpha,1/\alpha)$</div>
+<center><img width="45%" src="gammadistr.png" style="border:0px"/>
+<img width="40%" src="gamma.png" style="border:0px"/></center>
+
+<div class="fragment">Which model to use: rates, frequencies, gamma or not? </div>
+</section>
+
+<section>
+<h3>Bayesian inference through MCMC</h3>
+<center>
+<img width="38%" src="mcmc.png" style="border:0px"/>
+<img width="60%" src="mcmcrobot.png" style="border:0px"/></center>
+</section>
+
+<section>
+<h3><b>O</b>BAMA for <b>B</b>ayesian <b>A</b>minoacid <b>M</b>odel <b>A</b>veraging </h3>
+<ul style="font-size:22pt">
+<li>Average over empirical rate matrices
+<li>Average over frequency methods
+<li>Average over using gamma site heterogeneity or not
+<li>Average over using proportional invariable or not
+</ul>
+<img width="20%" src="obama2.png" style="border:0px"/>
+
+<br>
+<br>
+<br>No need to worry about model uncertainty. Set and forget...
+
+</section>
+
+<section>
+<h3>Other site models</h3>
+<ul>
+<li> C20: mixture of 20 rate models
+<li> CAT: pick base freqs per site
+<li> BP: base freqs change at points on branches
+<li> CAT-BP: combined CAT and BP
+<li> PhyloHMM: choose model at root based
+<li> ...
+</ul>
+
+<div class="fragment">
+<div>Clock models</div>
+...
+<div>Tree models</div>
+...
+</div>
+
+</section>
+
+<section>
+<h2>Conclusions</h2>
+<ul>
+<li>Trees provide useful model for evolutionary history
+<li>OBAMA takes care of site model uncertainty
+<li>Bayesian framework provides opportunities to combine sequence and structural informations
+</ul>
+</section>
+
+
+
+				</div>
+		</div>
+
+		<script src="../reveal.js-3.3.0/lib/js/head.min.js"></script>
+		<script src="../reveal.js-3.3.0/js/reveal.js"></script>
+		<!-->
+		<script src="../reveal.js-3.3.0/plugin/math/math.js"></script>
+		-->
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '../reveal.js-3.3.0/plugin/markdown/marked.js' },
+					{ src: '../reveal.js-3.3.0/plugin/markdown/markdown.js' },
+					{ src: '../reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+					{ src: '../reveal.js-3.3.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				],
+			});
+			Reveal.initialize({
+mathjax2: {
+    mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js',
+    config: 'TeX-AMS_HTML-full',
+    // pass other options into `MathJax.Hub.Config()`
+    tex2jax: {
+      inlineMath: [ [ '$', '$' ], [ '\\(', '\\)' ] ],
+      skipTags: [ 'script', 'noscript', 'style', 'textarea', 'pre' ]
+    }
+  },
+  plugins: [ RevealMath.MathJax2 ]
+			});
+		</script>
+	</body>
+</html>
+
