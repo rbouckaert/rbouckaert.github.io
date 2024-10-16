@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Beagle in BEAST 2.7</title>
+
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+				
+				<div style="font-size:60pt">Beagle in BEAST 2.7</div>
+				<p><center>Remco Bouckaert</center></p>
+				</section>
+
+<section><h2>Beagle</h2>
+	<ul>
+		<li>Library for <em>efficient</em> tree likelihood calculation</li>
+		<li>API to Java</li>
+		<li>Implementations for CPU, SSE, GPU, ...</li>
+		<li>Main gain from:
+			<ul>
+				<li>Matrix exponentiation</li>
+				<li>Partial calculation</li>
+			</ul>
+			but also does 
+			<ul>
+				<li>Scaling</li>
+				<li>Integration over categories</li>
+				<li>Root frequencies amalgamation</li>
+				<li>Set up instances</li>
+				<li>More...(not relevant for BEAST 2.7</li>
+		</li>
+	</ul>
+</section>
+
+
+<section><div style="font-size: 18pt;">Single partition tree likelihood calculation (image credit Paul O Lewis)</div>
+	<a href="https://stromtutorial.github.io/mac/steps/step-10/01-the-likelihood-class.html">
+	<img height="80%" width="80%" src='https://stromtutorial.github.io/assets/img/unpartitioned.png'/>
+	</a>
+</section>
+
+<section><div style="font-size: 28pt;">Single partition tree likelihood calculation</div>
+	<table><tr><td width="40%">
+	<img width="100%" src='https://stromtutorial.github.io/assets/img/unpartitioned.png'/>
+</td><td>
+	<ul>
+		<li>Initialise: tip states, pattern weights, allocate memory for partials, matrices, scalers</li>
+		<li>Site model changes: update category rates & weights</li>
+		<li>Subst model changes: update Eigenvalues/vectors OR matrices</li>
+		<li>Other changes: update partials</li>
+		<li>Finalise: integrate over categories, multiply with freqs, sum log root probs</li>
+	</ul>
+</td></tr></table>
+</section>
+
+<section><h2>Calling the Beagle API</h2>
+	<ul>
+		<li>(java) BEAST TreeLikelihood calls</li>
+		<li>(java) Beagle TreeLikelood calls</li>
+		<li>(java) Beagle JNI wrapper calls <span class="fragment" style="color:darkred"><= expensive</span></li>
+		<li>(cpp) JNI implementation calls</li>
+		<li>(cpp) Beagle instance calls <span class="fragment" style="color:darkred"><= expensive</span></li>
+		<li>(cpp) GPU implementation</li>
+	</ul>
+	<p>API designed to minimise the number of API calls!
+</section>
+
+<section><div style="font-size: 18pt;">Multi partition tree likelihood calculation (image credit Paul O Lewis)</div>
+	<a href="https://stromtutorial.github.io/mac/steps/step-10/01-the-likelihood-class.html">
+	<img height="80%" width="100%" src='https://stromtutorial.github.io/assets/img/partitioned.png'/>
+	</a>
+</section>
+
+<section><h3>MultiPartitionTreeLikelihood</h3>
+<p>Available in BEASTLabs (at the moment)
+
+
+<p style="font-family:monospace;font-size:20pt">&lt;distribution id="MultiPartitionTreeLikelihood" spec="beastlabs.evolution.likelihood.MultiPartitionTreeLikelihood”><br/>
+<br/>
+	&lt;!— (Threaded)TreeLikelihoods go here —><br/>
+<br/>
+&lt;/distribution><br/>
+</p>
+</section>
+
+<section><h3>MultiPartitionTreeLikelihood</h3>
+<img src="MultiPartitionTreeLikelihood.png"/>
+</section>
+
+
+
+<section><h3>EpochBeagleTreeLikelihood</h3>
+<svg width="150" height="100" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(-9.8889724,-75.172979)">
+    <path
+       id="path815"
+       d="M 26.994223,152.94172 71.093694,75.433559 117.86586,152.13992"
+       style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       id="path817"
+       d="m 47.306706,117.12761 18.174326,33.94323"
+       style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       id="path819"
+       d="M 106.64054,134.7674 94.88068,151.33811"
+       style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       id="path821"
+       d="M 9.8889724,110.44587 H 146.4637"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1,4;stroke-dashoffset:0;stroke-opacity:1" />
+  </g>
+  <text style="font-size:20px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2" x="110" y="25" >Q1</text>
+  <text style="font-size:20px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2" x="110" y="60" >Q2</text>
+</svg>
+	<ul>
+		<li>Split time into different epochs, each with their own substitution model</li>
+		<li>Where a branch crosses an epoch boundary, get transition probability matrix by multiplying matrices over appropriate time frame</li>
+		<li>Tell Beagle Eigenvalues/vectors for branches NOT crossing any epoch boundaries</li>
+		<li>Tell Beagle Transition probability matrices for branches crossing boundaries</li>
+		<li>Partial calculation, scaling, amalgamation remains as is</li>
+	</ul>
+</section>
+
+<section><h3>EpochBeagleTreeLikelihood</h3>
+	<p>2 epochs
+	<small>
+	<ul>
+		<li>Java: 94hr/million states</li>
+		<li>Beagle CPU, no Eigenvalues/vectors: 60hr/million states</li>
+		<li>Beagle GPU, no Eigenvalues/vectors: 46hr/million states</li>
+		<li>Beagle CPU, with Eigenvalues/vectors: 15hr/million states</li>
+		<li>Beagle GPU, with Eigenvalues/vectors: 6hr/million states</li>
+	</ul>
+	</small>
+</section>
+
+<section><h3>Next</h3>
+	<ul>
+		<li>Automatic tree likelihood configuration</li>
+		<ul>
+			<li>CPU/GPU</li>
+			<li>Multi/Single Partition</li>
+			<li>Number of threads</li>
+		</ul>
+		<li>Integration in Beauti</li>
+		<li>..</li>
+	</ul>
+</section>
+
+
+				</div>
+		</div>
+
+		<script src="../reveal.js-3.3.0/lib/js/head.min.js"></script>
+		<script src="../reveal.js-3.3.0/js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '../reveal.js-3.3.0/plugin/markdown/marked.js' },
+					{ src: '../reveal.js-3.3.0/plugin/markdown/markdown.js' },
+					{ src: '../reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+					{ src: '../reveal.js-3.3.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
