@@ -27,7 +27,7 @@
 			<div class="slides">
 				<section>
 				
-				<div style="font-size:60pt">Beagle in BEAST 2.7</div>
+				<div style="font-size:60pt;text-align:center">Beagle in BEAST 2.7</div>
 				<p><center>Remco Bouckaert</center></p>
 				</section>
 
@@ -41,6 +41,7 @@
 				<li>Matrix exponentiation</li>
 				<li>Partial calculation</li>
 			</ul>
+			<div class="fragment">
 			but also does 
 			<ul>
 				<li>Scaling</li>
@@ -48,6 +49,8 @@
 				<li>Root frequencies amalgamation</li>
 				<li>Set up instances</li>
 				<li>More...(not relevant for BEAST 2.7</li>
+			</ul>
+			</fragment>
 		</li>
 	</ul>
 </section>
@@ -78,9 +81,9 @@
 		<li>(java) BEAST TreeLikelihood calls</li>
 		<li>(java) Beagle TreeLikelood calls</li>
 		<li>(java) Beagle JNI wrapper calls <span class="fragment" style="color:darkred"><= expensive</span></li>
-		<li>(cpp) JNI implementation calls</li>
-		<li>(cpp) Beagle instance calls <span class="fragment" style="color:darkred"><= expensive</span></li>
-		<li>(cpp) GPU implementation</li>
+		<li>(c++) JNI implementation calls</li>
+		<li>(c++) Beagle instance calls <span class="fragment" style="color:darkred"><= expensive</span></li>
+		<li>(c++) GPU implementation</li>
 	</ul>
 	<p>API designed to minimise the number of API calls!
 </section>
@@ -143,25 +146,28 @@
 
 <section><h3>EpochBeagleTreeLikelihood</h3>
 	<p>2 epochs
-	<small>
+	<div style="font-size:20pt">
 	<ul>
 		<li>Java: 94hr/million states</li>
 		<li>Beagle CPU, no Eigenvalues/vectors: 60hr/million states</li>
 		<li>Beagle GPU, no Eigenvalues/vectors: 46hr/million states</li>
 		<li>Beagle CPU, with Eigenvalues/vectors: 15hr/million states</li>
-		<li>Beagle GPU, with Eigenvalues/vectors: 6hr/million states</li>
+		<li>Beagle GPU, with Eigenvalues/vectors: 6hr/million states (dollar shop GPU)<br/>=> 3hr/million states on $4000 GPU</li>
 	</ul>
-	</small>
+	</div>
 </section>
 
-<section><h3>Next</h3>
+<section><h3>Conclusion</h3>
+	<p>Different combinations of (partitions|CPU|GPU|threads|other jobs running) give different run times. 
+	<p>Hard to predict beforehand
 	<ul>
-		<li>Automatic tree likelihood configuration</li>
+		<li>Next: Automatic tree likelihood configuration</li>
 		<ul>
 			<li>CPU/GPU</li>
 			<li>Multi/Single Partition</li>
 			<li>Number of threads</li>
 		</ul>
+		<li>Potential for pseudo-parallel operators on subst/site model parameters</li>
 		<li>Integration in Beauti</li>
 		<li>..</li>
 	</ul>
