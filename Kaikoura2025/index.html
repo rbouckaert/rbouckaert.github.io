@@ -1,0 +1,621 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>BEAST2 Speeddating App</title>
+
+		<link rel="stylesheet" href="/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/css/theme/sky.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/css/print/pdf.css' : '/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+<style>
+  #treeCanvas {
+    border: 1px solid black;
+  }
+  #heightSlider {
+    width: 10px;
+    height: 400px;
+  }
+  #heightSlider2 {
+    width: 10px;
+    height: 400px;
+  }
+  #heightSlider3 {
+    width: 10px;
+    height: 400px;
+  }
+  #heightSlider4 {
+    width: 10px;
+    height: 400px;
+  }
+  tr {border:10px}
+</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+<section><div style="font-size:36pt">The BEAST 2 Speeddating App</div>
+
+				<p>Remco Bouckaert</p>
+				<p> <a href="mailto:r.bouckaert@auckland.ac.nz">r.bouckaert@auckland.ac.nz</a></p>
+				<p>Kaikōura 2025</p>
+				</section>
+
+<section data-transition="none"><h4>Dating phylogenies</h4>
+<table>
+<tr><td>Timing information</td><td>Molecular clock</td></tr>
+<tr><td>
+<ul>
+<li>Node calibrations
+<li>Dated tips exact
+<li>Dated tips distributions
+<li>Narrow clock prior
+<li>Fossil information
+</ul>
+</td><td>
+<ul>
+<li>Strict clock
+<li>Relaxed clock
+<li>Random/Fixed Local clock
+<li>Epoch clock
+<li>...
+</ul>
+</td>
+</tr>
+</table>
+</section>
+
+<section data-transition="none"><h4>Cube space: to speed up dating</h4>
+<center>
+  <canvas id="treeCanvas" width="600" height="400"></canvas>
+   <input type="range" id="heightSlider"  min="1" max="365" value="100" orient="vertical">
+   <input type="range" id="heightSlider2" min="1" max="365" value="200" orient="vertical">
+   <input type="range" id="heightSlider3" min="1" max="365" value="300" orient="vertical">
+   <input type="range" id="heightSlider4" min="1" max="365" value="300" orient="vertical">
+</center>
+  <script>
+    const canvas = document.getElementById('treeCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.font = "40px Arial";
+    const heightSlider = document.getElementById('heightSlider');
+    const heightSlider2 = document.getElementById('heightSlider2');
+    const heightSlider3 = document.getElementById('heightSlider3');
+    const heightSlider4 = document.getElementById('heightSlider4');
+    const heightValue = document.getElementById('heightValue');
+
+    let treeData = "((((A:100,B:100):100,C:200):100,D:300):100,E:400)"; // Newick string
+    treeData = "(((A:100,B:100):100,C:200):100,D:300)";
+    let AB = 100;
+    let BC = 200;
+    let CD = 300;
+    let DE = 400;
+    const values = [];
+    let treeHeight = 200; // Initial tree height
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
+    // Function to parse Newick string into a tree structure (CORRECTED)
+    function parseNewick(newick) {
+      let tree = {};
+      let currentNode = tree;
+      let name = "";
+      let branchLength = null;
+
+      for (let i = 0; i < newick.length; i++) {
+        const char = newick[i];
+
+        switch (char) {
+          case '(':
+            currentNode.children = [];
+            let newNode = {};
+            currentNode.children.push(newNode);
+            currentNode = newNode;
+            break;
+          case ',':
+            let newNode2 = {};
+            currentNode = findParent(tree, currentNode);
+            currentNode.children.push(newNode2);
+            currentNode = newNode2;
+            break;
+          case ')':
+            currentNode = findParent(tree, currentNode);
+            break;
+          case ':':
+            let lengthStr = "";
+            i++;
+            while (i < newick.length && newick[i] >= '0' && newick[i] <= '9' || newick[i] === '.') {
+              lengthStr += newick[i];
+              i++;
+            }
+            i--;
+            branchLength = parseFloat(lengthStr);
+            currentNode.branchLength = branchLength;  // Correct assignment here!
+            branchLength = null;
+            break;
+          default:
+            name += char;
+            if (i + 1 === newick.length || newick[i+1] === '(' || newick[i+1] === ')' || newick[i+1] === ',' || newick[i+1] === ':') {
+              currentNode.name = name;
+              name = "";  // Reset name after assignment
+            }
+            break;
+        }
+      }
+
+      return tree;
+    }
+
+    function findParent(tree, node) {
+      if (tree.children) {
+        for (let child of tree.children) {
+          if (child === node) {
+            return tree;
+          }
+          let found = findParent(child, node);
+          if (found) {
+            return found;
+          }
+        }
+      }
+      return null;
+    }
+
+    function calculatePositions(tree) {
+      let leafCount = 0;
+      let maxDepth = 0;
+
+      function traverse(node, depth) {
+
+          if (!node.children || node.children.length === 0) { //If leaf node
+              leafCount++;
+              node.x = leafCount;
+              node.y = depth; //Assign the depth as Y
+              maxDepth = Math.max(maxDepth, depth);
+              return 1; // leavesBelow. unused in this version
+          } else {
+            for(let child of node.children){
+              traverse(child, depth + (child.branchLength || 1)); //Recurse using the child's branch length
+            }
+            node.x = calculateAverageX(node.children);
+            node.y = depth;
+          }
+      }
+
+      traverse(tree, 0); // Start with a depth of 0
+
+      //Normalise to the maxDepth:
+      function normaliseDepths(node) {
+        node.y = maxDepth/10 - node.y/10;
+
+        if(node.children && node.children.length == 2) {
+          for(let child of node.children) {
+            normaliseDepths(child);
+          }
+        }
+      }
+      normaliseDepths(tree);
+
+
+      function normaliseDepths2(node, x) {
+        if(node.children && node.children.length == 2) {
+      	node.x = calculateX(node, x);
+
+//        if(node.children) {
+          for(let child of node.children) {
+            normaliseDepths2(child, node.x);
+          }
+  //      }
+        }
+      }
+      tree.x = 3.0;
+      tree.branchLength = 0;
+      normaliseDepths2(tree.children[0], tree.x);
+      normaliseDepths2(tree.children[1], tree.x);
+
+      treeHeight = 10;//maxDepth;
+
+      return {leafCount: leafCount};
+    }
+
+    function calculateX(node, x) {
+      let totalWeight = node.branchLength;
+      for (let child of node.children) {
+        totalWeight += child.branchLength;
+      }
+      let totalWeight2 = (totalWeight-node.branchLength);
+      for (let child of node.children) {
+        totalWeight2 += (totalWeight-child.branchLength);
+      }
+      let sum = x * (totalWeight - node.branchLength)/totalWeight2;
+      for (let child of node.children) {
+        sum += child.x * (totalWeight - child.branchLength)/totalWeight2;
+      }
+      return sum
+    }
+
+    //Helper function to calculate average X position of children
+    function calculateAverageX(children) {
+      let totalWeight = 0;
+      for (let child of children) {
+        totalWeight += child.branchLength;
+      }
+      let sum = 0;
+      for (let child of children) {
+        sum += child.x * (totalWeight - child.branchLength)/totalWeight;
+      }
+      return sum;
+    }
+
+    // Function to draw the tree on the canvas
+    function drawTree(tree, totalLeaves) {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      const horizontalSpacing = canvasWidth / (totalLeaves + 1);
+      const verticalSpacing = treeHeight;
+
+      function drawNode(node) {
+        let x = node.x * horizontalSpacing;
+        let y = canvasHeight - ( node.y * verticalSpacing + 35);
+
+        if (node.name) {
+          ctx.fillText(node.name, x - 15, y + 35);
+        }
+
+        if (node.children && (node.children.length == 2)) {
+          for (let child of node.children) {
+            let childX = child.x * horizontalSpacing;
+            let childY = canvasHeight - (  child.y * verticalSpacing +35);
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(childX, childY);
+            ctx.stroke();
+
+            drawNode(child);
+          }
+        }
+      }
+
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "#3366ff";
+      drawNode(tree);
+      
+      /*
+	  ctx.lineWidth = 1;
+      ctx.strokeStyle = "#333333";
+      
+            ctx.beginPath();
+            ctx.moveTo(horizontalSpacing * 1.5, canvasHeight-35);
+            ctx.lineTo(horizontalSpacing * 1.5, canvasHeight-AB);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(horizontalSpacing * 2.5, canvasHeight-35);
+            ctx.lineTo(horizontalSpacing * 2.5, canvasHeight-BC);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(horizontalSpacing * 3.5, canvasHeight-35);
+            ctx.lineTo(horizontalSpacing * 3.5, canvasHeight-CD);
+            ctx.stroke();
+            */
+
+      
+    }
+
+    // Initial drawing
+    let parsedTree = parseNewick(treeData);
+    let positions = calculatePositions(parsedTree);
+    let totalLeaves = positions.leafCount;
+    drawTree(parsedTree, totalLeaves);
+
+
+
+		function createNewick2(values) {
+		    let N = values.length + 1;
+		    const nodes = [];
+			for (let i = 0; i < N*2+2; i++) {
+				nodes[i] = {};
+                nodes[i].children = [];
+				nodes[i].nr = i;
+				nodes[i].branchLength = 0;
+				nodes[i].height = 0;
+				nodes[i].x = i;
+			}
+			let labels = "ABCDEFGHIJKLM";
+			for (let i = 0; i < N; i++) {
+				nodes[i].name = labels[i];
+			}			
+			let root = nodes[N*2+1];
+			root.height = 1000.0;
+			root.children.push(nodes[0]);
+			nodes[0].parent = root;
+
+			let current = nodes[0];
+			let next = N;
+			for (let i = 0; i < N-1; i++) {
+				let target = values[i];
+//				alert(target);
+				while (target > current.parent.height) {
+					current = current.parent;
+				}
+				let parent = current.parent;
+				//parent.children.delete(current);
+				const index = parent.children.indexOf(current);
+				if (index > -1) { // only splice array when item is found
+				  parent.children.splice(index, 1); // 2nd parameter means remove one item only
+				}
+				
+				parent.children.push(nodes[next]);
+				nodes[next].parent = parent;
+				
+				nodes[next].children.push(current);
+				current.parent = nodes[next];
+				nodes[next].children.push(nodes[i+1]);
+				nodes[i+1].parent = nodes[next];
+				nodes[next].height = target;
+				current = nodes[i+1];
+				next++;
+			}
+			for (let i = 0; i < N*2-1; i++) {
+				nodes[i].branchLength = nodes[i].parent.height - nodes[i].height;
+			}
+			root = root.children[0];
+			root.branchLength = 0;
+// 			let newick = toString(root);
+// 			alert(newick);
+			return root;
+		}
+		
+		function toString(node) {
+			if (node.children.length == 0) {
+				return node.name + ":" + node.branchLength;
+			}
+			return "(" +toString(node.children[0]) + "," + toString(node.children[1]) + "):" + node.branchLength;
+		}
+		
+	function createNewick() {
+		values[0] = AB;
+		values[1] = BC;
+		values[2] = CD;
+		values[3] = DE;
+		parsedTree = createNewick2(values);
+		return parsedTree;
+	}
+
+    // Event listener for height slider
+    heightSlider.addEventListener('input', function() {
+        AB = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+      drawTree(parsedTree, totalLeaves);
+    });
+    heightSlider2.addEventListener('input', function() {
+        BC = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+      drawTree(parsedTree, totalLeaves);
+    });
+   heightSlider3.addEventListener('input', function() {
+        CD = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+     drawTree(parsedTree, totalLeaves);
+   });
+   heightSlider4.addEventListener('input', function() {
+        DE = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+     drawTree(parsedTree, totalLeaves);
+   });
+  </script>
+
+</section>
+
+
+
+<section data-transition="none"><h4>Variational inference in cube space</h4>
+Yule, HKY + F, fixed strict clock<br>
+<table>
+<tr><th>parameter </th><th> => </th><th> transformed</th><th>dimension</th></tr>
+<tr><td>&lambda; </td><td> => </td><td> log(&lambda;)</td><td>1</td></tr>
+<tr><td>&kappa; </td><td> => </td><td> log(&kappa;)</td><td>1</td></tr>
+<tr><td>&pi; </td><td> => </td><td> stick-breaking(&pi;)</td><td>3</td></tr>
+<tr><td>Tree T</td><td> => </td><td>log(cube-transform(gaps))</td><td>n-1</td></tr>
+</table>
+
+<div class="fragment">
+Learn $M$ and $\Sigma$ of multi-variate normal $N(M,\Sigma)$ 
+<center>
+<img src="figures/matrix1.png" style="padding:0.3cm;border:0px"/>
+</center>
+</div>
+<!--
+<img class="fragment current-visible" src="figures/matrix2.png" style="padding:0.3cm;border:0px"/>
+-->
+</section>
+
+<section data-transition="none"><h4>Dating with node calibrations + strict clock</h4>
+Yule, HKY + F, mean clock rate<br>
+<table>
+<tr><th>parameter </th><th> => </th><th> transformed</th><th>dimension</th></tr>
+<tr><td>&lambda; </td><td> => </td><td> log(&lambda;)</td><td>1</td></tr>
+<tr><td>&kappa; </td><td> => </td><td> log(&kappa;)</td><td>1</td></tr>
+<tr><td>&pi; </td><td> => </td><td> stick-breaking(&pi;)</td><td>3</td></tr>
+<tr><td>Tree T</td><td> => </td><td>log(cube-transform(gaps))</td><td>n-1</td></tr>
+<tr style="color:blue;"><td>rate $m$</td><td> => </td><td> log($m$)</td><td>1</td></tr>
+</table>
+
+Learn $M$ and $\Sigma$ of multi-variate normal $N(M,\Sigma)$ 
+
+<center>
+<img src="figures/matrix1.png" style="padding:0.3cm;border:0px"/>
+</center>
+</section>
+
+
+<section data-transition="none"><h4>Relaxed clock for cubes</h4>
+Desiderata:
+<ul>
+<li>Parameters on leaf branches only
+<li>Internal branch rates a function of other rates
+<li>Functional dependence on children only for efficient Felsenstein's algorithm updating
+</ul>
+<div class="fragment">
+Averaged Relaxed Clock (ARC): 
+<ul>
+<li>Assumes rate at root=1
+<li>Rates on leaf branches log-normal distributed
+<li>Rate at internal branch weighted average (by inverse branch length) of child rates and 1 (by distance to root)
+</ul>
+</div>
+</section>
+
+<section data-transition="none"><h4>Dating with node calibrations + ARC</h4>
+Yule, HKY + F, ARC<br>
+<table>
+<tr><th>parameter </th><th> => </th><th> transformed</th><th>dimension</th></tr>
+<tr><td>&lambda; </td><td> => </td><td> log(&lambda;)</td><td>1</td></tr>
+<tr><td>&kappa; </td><td> => </td><td> log(&kappa;)</td><td>1</td></tr>
+<tr><td>&pi; </td><td> => </td><td> stick-breaking(&pi;)</td><td>3</td></tr>
+<tr><td>Tree T</td><td> => </td><td>log(cube-transform(gaps))</td><td>n-1</td></tr>
+<tr style="color:blue;"><td>rate $m$</td><td> => </td><td> log($m$)</td><td>1</td></tr>
+<tr style="color:blue;"><td>rates $r_i$</td><td> => </td><td> log($r_i$)</td><td>n</td></tr>
+<tr style="color:blue;"><td>stdev $s$</td><td> => </td><td> log($s$)</td><td>1</td></tr>
+</table>
+
+Learn $M$ and $\Sigma$ of multi-variate normal $N(M,\Sigma)$ 
+
+<center>
+<img src="figures/matrix1.png" style="padding:0.3cm;border:0px"/>
+</center>
+</section>
+
+<section data-transition="none"><h4>WCSS passes for node calibrations + ARC</h4>
+</section>
+
+<section data-transition="none"><h4>Dating with tip dates</h4>
+Cube transform gap relative to highest taxon<br>
+Still passes WCSS for strict and ARC
+</section>
+
+<section data-transition="none"><h4>Dating with narrow clock prior</h4>
+Still passes WCSS for strict and ARC
+</section>
+
+
+<section data-transition="none"><h4>Clock models with bursts</h4>
+<center>
+<img src="figures/spikes.png" width="60%" style="padding:0.3cm;border:0px"/><br>
+</center>
+<span style="font-size:16pt">Douglas et al. BioRxiv, 2025</span>
+</section>
+
+
+<section data-transition="none"><h4>Clock models with bursts for cube space</h4>
+<ul>
+<li>i-spike: associate increase in rate by $\epsilon \sim LogNormal(m,\sigma)$ for all internal nodes
+<li>adds 3 parameters ($\epsilon,m,\sigma$)
+<li>e-spike: associate increase in rate by $\epsilon_i \sim LogNormal(m,\sigma)$ for all external nodes $i$
+<li>adds n+2 parameters ($\epsilon_i,m,\sigma$)
+</ul>
+
+<div class="fragment">
+<table>
+<tr><td></td><td>no-spike</td><td>i-spike</td><td>e-spike</d><td>i+e-spike</td></tr>
+<tr><td>Strict</td><td>1</td><td>4</td><td>n+3</d><td>n+4</td></tr>
+<tr><td>ARC</td><td>n+2</td><td>n+5</td><td>2n+4</d><td>2n+5</td></tr>
+</table>
+</div>
+</section>
+
+
+<section data-transition="none"><h4>WCSS</h4>
+<small>
+<table>
+<tr><td></td><td>no-spike</td><td>no-spike</td><td>i-spike</td><td>e-spike</d><td>i+e-spike</td></tr>
+<tr><td></td><td>strict</td><td>ARC</td><td>ARC</td><td>ARC</d><td>ARC</td></tr>
+<tr><td>Mean clock rate 1</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</d><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Narrow clock rate prior</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</d><td>&#10003;</td><td></td></tr>
+<tr><td>Node calibration</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</d><td>&#10003;</td><td></td></tr>
+<tr><td>Tip dates</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</d><td>&#10003;</td><td></td></tr>
+<tr><td>Tip date sampling</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</d><td>&#10003;</td><td></td></tr>
+<tr><td>Sampled ancestors</td><td>&#x2718;</td><td></td><td></d><td></td><td></td></tr>
+<tr><td>SA + tip date sampling</td><td></td><td></td><td></d><td></td><td></td></tr>
+</table>
+</small>
+</section>
+
+<section data-transition="none"><h4>ARC when simulating under relaxed clock</h4>
+
+<ul>
+<li>Passes simulation study
+<li>Results in tighter root age intervals
+</ul>
+</section>
+
+
+<section data-transition="none"><h4>Conclusions</h4>
+<ul>
+<li>ARC provides alternative relaxed clock for cube space
+<li>Results in tighter root age intervals compared to ORC
+<li>Variants with bursts introduced: i-spike, e-spike
+<li>Allows fast dating using variational Bayes
+<li>Implemented in BEAST2
+</ul>
+
+<br>Todo:<br>
+<ul>
+<li>Extend to more tree priors
+<li>Proper variational optimisation
+</ul>
+</section>
+
+				</div>
+		</div>
+
+		<script src="/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/lib/js/head.min.js"></script>
+		<script src="/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/plugin/markdown/marked.js' },
+					{ src: '/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/plugin/markdown/markdown.js' },
+					{ src: '/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+					{ src: '/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+		<script src="/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/plugin/math/math.js"></script>
+<script>
+  Reveal.initialize({
+    math: {
+      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+      config: 'TeX-AMS_HTML-full',
+      // pass other options into `MathJax.Hub.Config()`
+      TeX: { Macros: { RR: "{\\bf R}" } }
+    },
+    plugins: [ RevealMath ]
+  });
+</script>
+	</body>
+</html>
