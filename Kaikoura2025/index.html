@@ -6,7 +6,7 @@
 
 		<title>BEAST2 Speeddating App</title>
 
-		<link rel="stylesheet" href="/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="reveal.css">
 		<link rel="stylesheet" href="/Users/remco/workspace/rbouckaert.github.io/reveal.js-3.3.0/css/theme/sky.css">
 
 		<!-- Theme used for syntax highlighting of code -->
@@ -24,6 +24,8 @@
   #treeCanvas {
     border: 1px solid black;
   }
+  input{width: 10px;
+    height: 400px;}
   #heightSlider {
     width: 10px;
     height: 400px;
@@ -53,7 +55,7 @@
 				<p>Kaikōura 2025</p>
 				</section>
 
-<section data-transition="none"><h4>Dating phylogenies</h4>
+<section><h4>Dating phylogenies</h4>
 <table>
 <tr><td>Timing information</td><td>Molecular clock</td></tr>
 <tr><td>
@@ -72,8 +74,7 @@
 <li>Epoch clock
 <li>...
 </ul>
-</td>
-</tr>
+</td></tr>
 </table>
 </section>
 
@@ -83,7 +84,7 @@
    <input type="range" id="heightSlider"  min="1" max="365" value="100" orient="vertical">
    <input type="range" id="heightSlider2" min="1" max="365" value="200" orient="vertical">
    <input type="range" id="heightSlider3" min="1" max="365" value="300" orient="vertical">
-   <input type="range" id="heightSlider4" min="1" max="365" value="300" orient="vertical">
+   <input type="range" id="heightSlider4" min="1" max="365" value="365" orient="vertical">
 </center>
   <script>
     const canvas = document.getElementById('treeCanvas');
@@ -95,8 +96,8 @@
     const heightSlider4 = document.getElementById('heightSlider4');
     const heightValue = document.getElementById('heightValue');
 
-    let treeData = "((((A:100,B:100):100,C:200):100,D:300):100,E:400)"; // Newick string
-    treeData = "(((A:100,B:100):100,C:200):100,D:300)";
+    let treeData = "((((A:100,B:100):100,C:200):100,D:300):65,E:365)"; // Newick string
+    //treeData = "(((A:100,B:100):100,C:200):100,D:300)";
     let AB = 100;
     let BC = 200;
     let CD = 300;
@@ -321,7 +322,7 @@
 
 
 
-		function createNewick2(values) {
+		function createNewick2(values, tipAges) {
 		    let N = values.length + 1;
 		    const nodes = [];
 			for (let i = 0; i < N*2+2; i++) {
@@ -330,6 +331,9 @@
 				nodes[i].nr = i;
 				nodes[i].branchLength = 0;
 				nodes[i].height = 0;
+				if (tipAges && i < N) {
+					nodes[i].height = tipAges[i];
+				}
 				nodes[i].x = i;
 			}
 			let labels = "ABCDEFGHIJKLM";
@@ -430,6 +434,8 @@
 
 <section data-transition="none"><h4>Variational inference in cube space</h4>
 Yule, HKY + F, fixed strict clock<br>
+<center>
+<small>
 <table>
 <tr><th>parameter </th><th> => </th><th> transformed</th><th>dimension</th></tr>
 <tr><td>&lambda; </td><td> => </td><td> log(&lambda;)</td><td>1</td></tr>
@@ -437,6 +443,8 @@ Yule, HKY + F, fixed strict clock<br>
 <tr><td>&pi; </td><td> => </td><td> stick-breaking(&pi;)</td><td>3</td></tr>
 <tr><td>Tree T</td><td> => </td><td>log(cube-transform(gaps))</td><td>n-1</td></tr>
 </table>
+</small>
+</center>
 
 <div class="fragment">
 Learn $M$ and $\Sigma$ of multi-variate normal $N(M,\Sigma)$ 
@@ -451,6 +459,8 @@ Learn $M$ and $\Sigma$ of multi-variate normal $N(M,\Sigma)$
 
 <section data-transition="none"><h4>Dating with node calibrations + strict clock</h4>
 Yule, HKY + F, mean clock rate<br>
+<center>
+<small>
 <table>
 <tr><th>parameter </th><th> => </th><th> transformed</th><th>dimension</th></tr>
 <tr><td>&lambda; </td><td> => </td><td> log(&lambda;)</td><td>1</td></tr>
@@ -459,12 +469,119 @@ Yule, HKY + F, mean clock rate<br>
 <tr><td>Tree T</td><td> => </td><td>log(cube-transform(gaps))</td><td>n-1</td></tr>
 <tr style="color:blue;"><td>rate $m$</td><td> => </td><td> log($m$)</td><td>1</td></tr>
 </table>
+</small>
+</center>
 
+<div class="fragment">
 Learn $M$ and $\Sigma$ of multi-variate normal $N(M,\Sigma)$ 
 
 <center>
 <img src="figures/matrix1.png" style="padding:0.3cm;border:0px"/>
 </center>
+Passes WCSS
+</div>
+</section>
+
+
+<section data-transition="none"><h4>Clock models</h4>
+<center>
+  <canvas id="treeCanvasB" width="600" height="400"></canvas>
+   <input type="range" id="heightSliderB"  min="1" max="365" value="100" orient="vertical">
+   <input type="range" id="heightSlider2B" min="1" max="365" value="200" orient="vertical">
+   <input type="range" id="heightSlider3B" min="1" max="365" value="300" orient="vertical">
+   <input type="range" id="heightSlider4B" min="1" max="365" value="365" orient="vertical">
+   <span class="fragment">
+   <input type="range" id="heightSliderR1" min="1" max="365" value="10" orient="vertical">
+   <input type="range" id="heightSliderR1" min="1" max="365" value="20" orient="vertical">
+   <input type="range" id="heightSliderR1" min="1" max="365" value="30" orient="vertical">
+   <input type="range" id="heightSliderR1" min="1" max="365" value="20" orient="vertical">
+   <input type="range" id="heightSliderR1" min="1" max="365" value="50" orient="vertical">
+   </span>
+</center>
+<script>
+    const canvasB = document.getElementById('treeCanvasB');
+    const ctxB = canvasB.getContext('2d');
+    ctxB.font = "40px Arial";
+    const heightSliderB = document.getElementById('heightSliderB');
+    const heightSlider2B = document.getElementById('heightSlider2B');
+    const heightSlider3B = document.getElementById('heightSlider3B');
+    const heightSlider4B = document.getElementById('heightSlider4B');
+
+    function drawTreeB(tree, totalLeaves) {
+      ctxB.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      const horizontalSpacing = canvasWidth / (totalLeaves + 1);
+      const verticalSpacing = treeHeight;
+
+      function drawNodeB(node) {
+        let x = node.x * horizontalSpacing;
+        let y = canvasHeight - ( node.y * verticalSpacing + 35);
+
+        if (node.name) {
+		  ctxB.font = "40px Arial";
+          ctxB.fillText(node.name, x - 15, y + 35);
+        }
+
+        if (node.children && (node.children.length == 2)) {
+          for (let child of node.children) {
+            let childX = child.x * horizontalSpacing;
+            let childY = canvasHeight - (  child.y * verticalSpacing +35);
+
+            ctxB.beginPath();
+            ctxB.moveTo(x, y);
+            ctxB.lineTo(childX, childY);
+            ctxB.stroke();
+
+			let branchX = (x + childX) / 2.0;
+			let branchY = (y + childY) / 2.0;
+		    ctxB.font = "25px Arial";
+	        ctxB.fillText("r"+child.nr, branchX - 40, branchY);
+            drawNodeB(child);
+          }
+        }
+      }
+
+      ctxB.lineWidth = 5;
+      ctxB.strokeStyle = "#3366ff";
+      drawNodeB(tree);
+    }
+    
+	DE = 365;
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+    drawTreeB(parsedTree, totalLeaves);
+
+    // Event listener for height slider
+    heightSliderB.addEventListener('input', function() {
+        AB = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+      drawTreeB(parsedTree, totalLeaves);
+    });
+    heightSlider2B.addEventListener('input', function() {
+        BC = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+      drawTreeB(parsedTree, totalLeaves);
+    });
+   heightSlider3B.addEventListener('input', function() {
+        CD = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+     drawTreeB(parsedTree, totalLeaves);
+   });
+   heightSlider4B.addEventListener('input', function() {
+        DE = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+     drawTreeB(parsedTree, totalLeaves);
+   });
+</script>
 </section>
 
 
@@ -487,6 +604,8 @@ Averaged Relaxed Clock (ARC):
 
 <section data-transition="none"><h4>Dating with node calibrations + ARC</h4>
 Yule, HKY + F, ARC<br>
+<center>
+<small>
 <table>
 <tr><th>parameter </th><th> => </th><th> transformed</th><th>dimension</th></tr>
 <tr><td>&lambda; </td><td> => </td><td> log(&lambda;)</td><td>1</td></tr>
@@ -494,9 +613,11 @@ Yule, HKY + F, ARC<br>
 <tr><td>&pi; </td><td> => </td><td> stick-breaking(&pi;)</td><td>3</td></tr>
 <tr><td>Tree T</td><td> => </td><td>log(cube-transform(gaps))</td><td>n-1</td></tr>
 <tr style="color:blue;"><td>rate $m$</td><td> => </td><td> log($m$)</td><td>1</td></tr>
-<tr style="color:blue;"><td>rates $r_i$</td><td> => </td><td> log($r_i$)</td><td>n</td></tr>
 <tr style="color:blue;"><td>stdev $s$</td><td> => </td><td> log($s$)</td><td>1</td></tr>
+<tr style="color:blue;"><td>rates $r_i$</td><td> => </td><td> log($r_i$)</td><td>n</td></tr>
 </table>
+</small>
+</center>
 
 Learn $M$ and $\Sigma$ of multi-variate normal $N(M,\Sigma)$ 
 
@@ -506,16 +627,180 @@ Learn $M$ and $\Sigma$ of multi-variate normal $N(M,\Sigma)$
 </section>
 
 <section data-transition="none"><h4>WCSS passes for node calibrations + ARC</h4>
+
+<center>
+<small>
+<table   cellspacing="0" cellpadding="0"  ><colgroup ><col ><col ><col ><col ></colgroup><tr><td> Sequence length:</td><td> 100          </td><td> 250       </td><td> 500       </td></tr>
+<tr><td/><td/><td/><td/></tr>
+<tr><td> Entropy: Mean and 95% HPD  </td><td> 13.1 (5.9-15.7)  </td><td> 5.7 (3.0-9.1)  </td><td> 4.7 (1.5-6.5)  </td></tr>
+<tr><td/><td/><td/><td/></tr>
+<tr><td>Tree.height</td><td>96</td><td>97</td><td>97</td></tr>
+<tr><td>Tree.treeLength</td><td>93</td><td>94</td><td>94</td></tr>
+<tr><td>kappa</td><td>90*</td><td>96</td><td>96</td></tr>
+<tr><td>gammaShape</td><td>97</td><td>92</td><td>92</td></tr>
+<tr><td>lambda</td><td>90*</td><td>94</td><td>94</td></tr>
+<tr><td>YuleModel</td><td>92</td><td>95</td><td>95</td></tr>
+<tr><td>freqParameter.1</td><td>94</td><td>96</td><td>96</td></tr>
+<tr><td>freqParameter.2</td><td>90*</td><td>96</td><td>96</td></tr>
+<tr><td>freqParameter.3</td><td>92</td><td>97</td><td>97</td></tr>
+<tr><td>freqParameter.4</td><td>97</td><td>96</td><td>96</td></tr>
+<tr><td>clockRate</td><td>95</td><td>96</td><td>96</td></tr>
+<tr><td>ARCsigma</td><td>91</td><td>93</td><td>93</td></tr>
+</table>
+</small>
+</center>
+
+</section>
+
+<section data-transition="none"><h4>Dating with tip dates</h4>
+
+<img width="30%" src="ARCRates100.svg" style="padding:0.3cm;border:0px"/>
+<img width="30%" src="ARCRates250.svg" style="padding:0.3cm;border:0px"/>
+<img width="30%" src="ARCRates500.svg" style="padding:0.3cm;border:0px"/>
+
+Tip rates for sequence lengths 100, 250 and 500
+
+</section>
+
+<section data-transition="none"><h4>Dating with tip dates</h4>
+<center>
+  <canvas id="treeCanvasC" width="600" height="400"></canvas>
+<!--  <span class="fragment fade-out"-->
+   <input type="range" id="heightSliderC"  min="1" max="365" value="100" orient="vertical">
+   <input type="range" id="heightSlider2C" min="1" max="365" value="200" orient="vertical">
+   <input type="range" id="heightSlider3C" min="1" max="365" value="300" orient="vertical">
+   <input type="range" id="heightSlider4C" min="1" max="365" value="365" orient="vertical">
+<!--/span-->
+<span class="fragment" id="downsize" style="vertical-align:top;" onvisible="downsize()">
+<!--
+   <input type="range" style="height:265px;vertical-align:top;" id="heightSliderC"  min="1" max="365" value="100" orient="vertical">
+   <input type="range" style="height:265px;vertical-align:top;" id="heightSlider2C" min="1" max="365" value="200" orient="vertical">
+   <input type="range" style="height:315px;vertical-align:top;" id="heightSlider3C" min="1" max="365" value="300" orient="vertical">
+   <input type="range" style="height:165px;vertical-align:top;" id="heightSlider4C" min="1" max="365" value="365" orient="vertical">
+   -->
+</span>
+</center>
+<script>
+    const canvasC = document.getElementById('treeCanvasC');
+    const ctxC = canvasC.getContext('2d');
+    ctxC.font = "40px Arial";
+    const heightSliderC = document.getElementById('heightSliderC');
+    const heightSlider2C = document.getElementById('heightSlider2C');
+    const heightSlider3C = document.getElementById('heightSlider3C');
+    const heightSlider4C = document.getElementById('heightSlider4C');
+
+
+	function downsize() {
+		alert("downsize");
+	}
+
+    function drawTreeC(tree, totalLeaves) {
+      ctxC.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      const horizontalSpacing = canvasWidth / (totalLeaves + 1);
+      const verticalSpacing = treeHeight;
+
+      function drawNodeC(node) {
+        let x = node.x * horizontalSpacing;
+        let y = canvasHeight - ( node.y * verticalSpacing + 35);
+
+        if (node.name) {
+		  ctxC.font = "40px Arial";
+          ctxC.fillText(node.name, x - 15, y + 35);
+        }
+
+        if (node.children && (node.children.length == 2)) {
+          for (let child of node.children) {
+            let childX = child.x * horizontalSpacing;
+            let childY = canvasHeight - (  child.y * verticalSpacing +35);
+
+            ctxC.beginPath();
+            ctxC.moveTo(x, y);
+            ctxC.lineTo(childX, childY);
+            ctxC.stroke();
+            drawNodeC(child);
+          }
+        }
+      }
+
+      ctxC.lineWidth = 5;
+      ctxC.strokeStyle = "#3366ff";
+      drawNodeC(tree);
+    }
+    
+	DE = 365;
+	    parsedTree = createNewickWithTips();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+    drawTreeC(parsedTree, totalLeaves);
+
+	function createNewickWithTips() {
+		values[0] = AB;
+		values[1] = BC;
+		values[2] = CD;
+		values[3] = DE;
+		parsedTree = createNewick2(values, [0,100,50,0,200]);
+		return parsedTree;
+	}
+
+    // Event listener for height slider
+    heightSliderC.addEventListener('input', function() {
+        AB = parseInt(this.value);
+	    parsedTree = createNewickWithTips();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+      drawTreeC(parsedTree, totalLeaves);
+    });
+    heightSlider2C.addEventListener('input', function() {
+        BC = parseInt(this.value);
+	    parsedTree = createNewickWithTips();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+      drawTreeC(parsedTree, totalLeaves);
+    });
+   heightSlider3C.addEventListener('input', function() {
+        CD = parseInt(this.value);
+	    parsedTree = createNewickWithTips();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+     drawTreeC(parsedTree, totalLeaves);
+   });
+   heightSlider4C.addEventListener('input', function() {
+        DE = parseInt(this.value);
+	    parsedTree = createNewickWithTips();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+     drawTreeC(parsedTree, totalLeaves);
+   });
+</script>
 </section>
 
 <section data-transition="none"><h4>Dating with tip dates</h4>
 Cube transform gap relative to highest taxon<br>
 Still passes WCSS for strict and ARC
+<p/>
+
+<div class="fragment"><h4>Dating with narrow clock prior</h4>
+Still passes WCSS for strict and ARC
+</div>
 </section>
 
-<section data-transition="none"><h4>Dating with narrow clock prior</h4>
-Still passes WCSS for strict and ARC
+
+
+<section data-transition="none"><h4>ARC when simulating under relaxed clock (ARC vs ORC)</h4>
+
+<ul>
+<li>Passes simulation study <small>sort of</small>
+<li>Results in tighter root age intervals
+</ul>
+<center>
+<img width="60%" src='treeheight.png' style="padding:0.3cm;border:0px"/>
+</center>
 </section>
+
+
+
+
 
 
 <section data-transition="none"><h4>Clock models with bursts</h4>
@@ -523,6 +808,101 @@ Still passes WCSS for strict and ARC
 <img src="figures/spikes.png" width="60%" style="padding:0.3cm;border:0px"/><br>
 </center>
 <span style="font-size:16pt">Douglas et al. BioRxiv, 2025</span>
+</section>
+
+
+<section data-transition="none"><h4>Clock models with bursts</h4>
+<center>
+  <canvas id="treeCanvasE" width="600" height="400"></canvas>
+   <input type="range" id="heightSliderE"  min="1" max="365" value="100" orient="vertical">
+   <input type="range" id="heightSlider2E" min="1" max="365" value="200" orient="vertical">
+   <input type="range" id="heightSlider3E" min="1" max="365" value="300" orient="vertical">
+   <input type="range" id="heightSlider4E" min="1" max="365" value="365" orient="vertical">
+</center>
+<script>
+    const canvasE = document.getElementById('treeCanvasE');
+    const ctxE = canvasE.getContext('2d');
+    ctxE.font = "40px Arial";
+    const heightSliderE = document.getElementById('heightSliderE');
+    const heightSlider2E = document.getElementById('heightSlider2E');
+    const heightSlider3E = document.getElementById('heightSlider3E');
+    const heightSlider4E = document.getElementById('heightSlider4E');
+
+    function drawTreeE(tree, totalLeaves) {
+      ctxE.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      const horizontalSpacing = canvasWidth / (totalLeaves + 1);
+      const verticalSpacing = treeHeight;
+
+      function drawNodeE(node) {
+        let x = node.x * horizontalSpacing;
+        let y = canvasHeight - ( node.y * verticalSpacing + 35);
+
+        if (node.name) {
+		  ctxE.font = "40px Arial";
+          ctxE.fillText(node.name, x - 15, y + 35);
+        }
+
+        if (node.children && (node.children.length == 2)) {
+          for (let child of node.children) {
+            let childX = child.x * horizontalSpacing;
+            let childY = canvasHeight - (  child.y * verticalSpacing +35);
+
+            ctxE.beginPath();
+            ctxE.moveTo(x, y);
+            ctxE.lineTo(childX, childY);
+            ctxE.stroke();
+
+			let branchX = (x + childX) / 2.0;
+			let branchY = (y + childY) / 2.0;
+		    ctxE.font = "16px Arial";
+	        ctxE.fillText("τ"+child.nr + "r"+child.nr + " + ε"+child.nr , branchX - 70, branchY);
+            drawNodeE(child);
+          }
+        }
+      }
+
+      ctxE.lineWidth = 5;
+      ctxE.strokeStyle = "#3366ff";
+      drawNodeE(tree);
+    }
+    
+	DE = 365;
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+    	drawTreeE(parsedTree, totalLeaves);
+
+    // Event listener for height slider
+    heightSliderE.addEventListener('input', function() {
+        AB = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+        drawTreeE(parsedTree, totalLeaves);
+    });
+    heightSlider2E.addEventListener('input', function() {
+        BC = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+        drawTreeE(parsedTree, totalLeaves);
+    });
+   heightSlider3E.addEventListener('input', function() {
+        CD = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+        drawTreeE(parsedTree, totalLeaves);
+   });
+   heightSlider4E.addEventListener('input', function() {
+        DE = parseInt(this.value);
+	    parsedTree = createNewick();
+    	positions = calculatePositions(parsedTree);
+    	totalLeaves = positions.leafCount;
+        drawTreeE(parsedTree, totalLeaves);
+   });
+</script>
 </section>
 
 
@@ -560,28 +940,22 @@ Still passes WCSS for strict and ARC
 </small>
 </section>
 
-<section data-transition="none"><h4>ARC when simulating under relaxed clock</h4>
-
-<ul>
-<li>Passes simulation study
-<li>Results in tighter root age intervals
-</ul>
-</section>
 
 
-<section data-transition="none"><h4>Conclusions</h4>
+<section><h4>Conclusions</h4>
 <ul>
 <li>ARC provides alternative relaxed clock for cube space
-<li>Results in tighter root age intervals compared to ORC
 <li>Variants with bursts introduced: i-spike, e-spike
 <li>Allows fast dating using variational Bayes
+<li>ARC gives in tighter root age intervals than ORC
 <li>Implemented in BEAST2
 </ul>
 
 <br>Todo:<br>
 <ul>
-<li>Extend to more tree priors
+<li>Extend cube inference to more tree priors
 <li>Proper variational optimisation
+<li>Extend to matrix/multi-cube inference
 </ul>
 </section>
 
@@ -614,8 +988,24 @@ Still passes WCSS for strict and ARC
       // pass other options into `MathJax.Hub.Config()`
       TeX: { Macros: { RR: "{\\bf R}" } }
     },
-    plugins: [ RevealMath ]
+    plugins: [ RevealMath ],
+    slideNumber: 'c/t' 
   });
+
+Reveal.addEventListener('fragmentshown', function(event) {
+    let fragment = event.fragment;
+    if (fragment.id == "downsize") {
+    const heightSliderC = document.getElementById('heightSliderC');
+    const heightSlider2C = document.getElementById('heightSlider2C');
+    const heightSlider3C = document.getElementById('heightSlider3C');
+    const heightSlider4C = document.getElementById('heightSlider4C');    
+	heightSliderC.style="height:265px;vertical-align:top;";
+	heightSlider2C.style="height:265px;vertical-align:top;";
+	heightSlider3C.style="height:315px;vertical-align:top;";
+	heightSlider4C.style="height:165px;vertical-align:top;";
+    }
+	//console.log('Fragment ' + index + ' shown.' + fragment.id);
+});  
 </script>
 	</body>
 </html>
