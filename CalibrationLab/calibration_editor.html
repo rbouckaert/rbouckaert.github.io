@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calibration Lab</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        :root { --bg: #f8f9fa; --card: #ffffff; --primary: #2c3e50; --accent: #27ae60; --border: #dee2e6; --blue: #3498db; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; color: var(--primary); font-size: 13px; }
+        .app-layout { display: grid; grid-template-columns: 240px 1fr 360px; height: 100vh; width: 100vw; overflow: hidden; }
+        .col { display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--card); height: 100vh; }
+        .col-header { padding: 12px 15px; border-bottom: 1px solid var(--border); background: #fff; flex-shrink: 0; }
+        .scroll-area { flex-grow: 1; overflow-y: auto; padding: 15px; background: #fdfdfd; scrollbar-width: thin; scrollbar-color: #ccc transparent; }
+        .scroll-area::-webkit-scrollbar { width: 8px; }
+        .scroll-area::-webkit-scrollbar-thumb { background-color: #cbd5e0; border-radius: 10px; border: 2px solid #fdfdfd; }
+        
+        /* Taxa Controls */
+        .taxa-item { display: flex; gap: 5px; margin-bottom: 8px; }
+        .taxa-input { flex-grow: 1; padding: 4px; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; }
+        .taxa-actions { padding: 12px; border-top: 1px solid #eee; display: flex; flex-direction: column; gap: 8px; }
+
+        /* Calibration Cards */
+        .dist-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 15px; border-top: 5px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+        .taxa-select-box { margin-top: 10px; padding: 8px; background: #f8f9fa; border-radius: 4px; border: 1px solid #eee; max-height: 180px; overflow-y: auto; }
+        .selection-header { font-size: 10px; font-weight: bold; color: #444; margin: 8px 0 4px 0; border-bottom: 1px solid #ddd; padding-bottom: 2px; text-transform: uppercase; }
+        .item-checkbox { display: flex; align-items: center; gap: 6px; font-size: 11px; margin-bottom: 4px; cursor: pointer; padding: 2px; border-radius: 3px; }
+        .item-checkbox:hover { background: #eceff1; }
+        .item-checkbox.disabled { color: #bbb; font-style: italic; cursor: not-allowed; opacity: 0.7; }
+        .assigned-tag { color: #e74c3c; font-size: 9px; margin-left: auto; font-weight: bold; }
+        
+        #chart-container { height: 250px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #eee; flex-shrink: 0; }
+        #tree-container { flex-grow: 1; background: #fff; position: relative; }
+        
+        .btn { padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; font-size: 11px; transition: 0.2s; text-align: center; }
+        .btn-add { background: var(--accent); color: white; }
+        .btn-fasta { background: var(--blue); color: white; }
+        .btn-rm { background: #ff7675; color: white; padding: 2px 6px; border-radius: 3px; }
+        
+        h3 { margin: 0; font-size: 14px; text-transform: uppercase; color: #555; }
+        label { font-size: 10px; font-weight: bold; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        input[type="number"], select { width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 3px; font-size: 12px; }
+        .label-edit { border: none; border-bottom: 1px solid #eee; font-weight: bold; font-size: 13px; width: 80%; outline: none; }
+    </style>
+</head>
+<body>
+
+<div class="app-layout">
+    <!-- LEFT: Taxa Manager -->
+    <div class="col">
+        <div class="col-header"><h3>Taxa</h3></div>
+        <div class="scroll-area" id="taxaContainer"></div>
+        <div class="taxa-actions">
+            <button class="btn btn-add" onclick="addTaxon()">+ New Taxon</button>
+            <button class="btn btn-fasta" onclick="document.getElementById('fastaInput').click()">📂 Load FASTA</button>
+            <input type="file" id="fastaInput" style="display:none" accept=".fasta,.fa,.fas,.txt" onchange="handleFasta(this)">
+        </div>
+    </div>
+
+    <!-- MIDDLE: Calibrations -->
+    <div class="col">
+        <div class="col-header" style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Calibrations</h3>
+            <button class="btn btn-add" style="width:auto;" onclick="addCalibration()">+ Add Calibration</button>
+        </div>
+     	<div id="chart-container"><canvas id="mainChart"></canvas></div>
+        <div class="scroll-area" id="middleScrollArea">
+            <div id="calibrationContainer"></div>
+        </div>
+    </div>
+
+    <!-- RIGHT: Tree -->
+    <div class="col" style="border-right:none;">
+        <div class="col-header"><h3>Phylogeny</h3></div>
+        <div class="scroll-area" style="padding:0; display:flex; flex-direction:column;">
+            <div style="padding:15px; border-bottom: 1px solid #eee;">
+                <label>Newick String</label>
+                <textarea id="newickInput" style="width:100%; height:40px; font-family:monospace; font-size:10px; padding:5px;" readonly></textarea>
+            </div>
+            <div id="tree-container"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /** --- STATE --- **/
+    let taxa = ["Homo_sapiens", "Pan_troglodytes", "Gorilla_gorilla"];
+    let calibrations = [];
+    let idCounter = 0;
+    let mainChart;
+    const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6'];
+
+    /** --- MATH ENGINE --- **/
+    const DistMath = {
+        gamma(z) {
+            const p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+            if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * this.gamma(1 - z));
+            z -= 1; let x = p[0]; for (let i = 1; i < 9; i++) x += p[i] / (z + i);
+            let t = z + 7.5; return Math.sqrt(2 * Math.PI) * Math.pow(t, (z + 0.5)) * Math.exp(-t) * x;
+        },
+        beta(a, b) { return (this.gamma(a) * this.gamma(b)) / this.gamma(a + b); }
+    };
+
+    const Configs = {
+        lognormal: { name: "Log-Normal", fields: [{id:'m', label:'Log μ', val:1.0}, {id:'s', label:'Log σ', val:0.15}], pdf: (x, p) => x <= 0 ? 0 : (1/(x*p.s*Math.sqrt(2*Math.PI))) * Math.exp(-Math.pow(Math.log(x)-p.m,2)/(2*p.s*p.s)), range: (p) => [0, Math.exp(p.m + 3.5*p.s)] },
+        normal: { name: "Normal", fields: [{id:'m', label:'Mean', val:0}, {id:'s', label:'Sigma', val:1}], pdf: (x, p) => (1/(p.s*Math.sqrt(2*Math.PI))) * Math.exp(-Math.pow(x-p.m,2)/(2*p.s*p.s)), range: (p) => [p.m - 4*p.s, p.m + 4*p.s] },
+        gamma: { name: "Gamma", fields: [{id:'k', label:'Shape', val:2}, {id:'t', label:'Scale', val:2}], pdf: (x, p) => x <= 0 ? 0 : (1/(Math.pow(p.t, p.k)*DistMath.gamma(p.k)))*Math.pow(x, p.k-1)*Math.exp(-x/p.t), range: (p) => [0, (p.k*p.t)+(6*Math.sqrt(p.k)*p.t)] },
+        exponential: { name: "Exp", fields: [{id:'l', label:'Lambda', val:1}], pdf: (x, p) => x < 0 ? 0 : p.l * Math.exp(-p.l * x), range: (p) => [0, 5/p.l] },
+        beta: { name: "Beta", fields: [{id:'a', label:'Alpha', val:2}, {id:'b', label:'Beta', val:5}], pdf: (x, p) => (x<0 || x>1) ? 0 : (Math.pow(Math.max(1e-9, Math.min(1-1e-9, x)), p.a-1)*Math.pow(Math.max(1e-9, Math.min(1-1e-9, 1-x)), p.b-1))/DistMath.beta(p.a, p.b), range: (p) => [0, 1] },
+        cauchy: { name: "Cauchy", fields: [{id:'x0', label:'Loc', val:0}, {id:'g', label:'Scale', val:1}], pdf: (x, p) => (1/(Math.PI*p.g))*(1/(1+Math.pow((x-p.x0)/p.g, 2))), range: (p) => [p.x0-10*p.g, p.x0+10*p.g] },
+        laplace: { name: "Laplace", fields: [{id:'m', label:'Loc', val:0}, {id:'b', label:'Scale', val:1}], pdf: (x, p) => (1/(2*p.b))*Math.exp(-Math.abs(x-p.m) / p.b), range: (p) => [p.m-8*p.b, p.m+8*p.b] }
+    };
+
+    /** --- FASTA IMPORT --- **/
+    function handleFasta(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const lines = text.split(/\r?\n/);
+            const foundTaxa = [];
+
+            lines.forEach(line => {
+                if (line.startsWith('>')) {
+                    // Extract ID after '>' and before the first space
+                    let name = line.substring(1).trim().split(/\s+/)[0];
+                    // Replace special chars for Newick safety
+                    name = name.replace(/[^a-zA-Z0-9_]/g, '_');
+                    if (name && !foundTaxa.includes(name)) {
+                        foundTaxa.push(name);
+                    }
+                }
+            });
+
+            if (foundTaxa.length > 0) {
+                if (confirm(`Replace current taxa with ${foundTaxa.length} taxa found in FASTA?`)) {
+                    taxa = foundTaxa;
+                    // Reset calibrations assigned taxa because the names changed
+                    calibrations.forEach(c => c.childrenTaxa = []);
+                    renderTaxa();
+                    renderCalibrations();
+                    updateNewick();
+                }
+            } else {
+                alert("No valid FASTA headers (starting with '>') were found.");
+            }
+            input.value = ''; // Reset input
+        };
+        reader.readAsText(file);
+    }
+
+    /** --- TAXA MANAGEMENT --- **/
+    function addTaxon() { taxa.push(`Taxon_${taxa.length+1}`); renderTaxa(); renderCalibrations(); updateNewick(); }
+    function removeTaxon(i) {
+        const n = taxa[i]; taxa.splice(i, 1);
+        calibrations.forEach(c => c.childrenTaxa = c.childrenTaxa.filter(t => t !== n));
+        renderTaxa(); renderCalibrations(); updateNewick();
+    }
+    function updateTaxonName(i, name) {
+        const old = taxa[i], n = name.replace(/\s+/g, '_'); taxa[i] = n;
+        calibrations.forEach(c => { const idx = c.childrenTaxa.indexOf(old); if(idx > -1) c.childrenTaxa[idx] = n; });
+        renderCalibrations(); updateNewick();
+    }
+    function renderTaxa() {
+        document.getElementById('taxaContainer').innerHTML = taxa.map((t, i) => `<div class="taxa-item"><input type="text" class="taxa-input" value="${t}" oninput="updateTaxonName(${i}, this.value)"><button class="btn btn-rm" onclick="removeTaxon(${i})">✕</button></div>`).join('');
+    }
+
+    /** --- CALIBRATIONS --- **/
+    function addCalibration() {
+        const id = idCounter++;
+        const type = 'lognormal';
+        const params = {}; Configs[type].fields.forEach(f => params[f.id] = f.val);
+        calibrations.push({ id, type, label: `Calibration_${id+1}`, color: colors[id % colors.length], childrenTaxa: [], childrenCals: [], params });
+        renderCalibrations(); updateChart(); updateNewick();
+    }
+
+    function isAncestor(childId, potentialParentId) {
+        const child = calibrations.find(c => c.id === childId);
+        if (!child) return false;
+        if (child.childrenCals.includes(potentialParentId)) return true;
+        return child.childrenCals.some(cid => isAncestor(cid, potentialParentId));
+    }
+
+    function updateDistType(id, newType) {
+        const cal = calibrations.find(c => c.id === id);
+        cal.type = newType;
+        cal.params = {}; Configs[newType].fields.forEach(f => cal.params[f.id] = f.val);
+        renderCalibrations(); updateChart();
+    }
+
+    function toggleExclusive(calId, type, item) {
+        const currentCal = calibrations.find(c => c.id === calId);
+        const listName = type === 'taxa' ? 'childrenTaxa' : 'childrenCals';
+        const isSelected = currentCal[listName].includes(item);
+        if (!isSelected) {
+            calibrations.forEach(c => c[listName] = c[listName].filter(x => x !== item));
+            currentCal[listName].push(item);
+        } else { currentCal[listName] = currentCal[listName].filter(x => x !== item); }
+        renderCalibrations(); updateChart(); updateNewick();
+    }
+
+    function renderCalibrations() {
+        const middlePane = document.getElementById('middleScrollArea');
+        const mainScrollPos = middlePane ? middlePane.scrollTop : 0;
+        const internalScrolls = {};
+        document.querySelectorAll('.dist-card').forEach(card => {
+            const calId = card.getAttribute('data-id');
+            const box = card.querySelector('.taxa-select-box');
+            if (box) internalScrolls[calId] = box.scrollTop;
+        });
+
+        document.getElementById('calibrationContainer').innerHTML = calibrations.map(c => {
+            const conf = Configs[c.type];
+            return `
+            <div class="dist-card" data-id="${c.id}" style="border-top-color: ${c.color}">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <input type="text" class="label-edit" value="${c.label}" oninput="calibrations.find(x=>x.id==${c.id}).label=this.value.replace(/\\s/g,'_'); updateChart(); updateNewick()">
+                    <button class="btn btn-rm" onclick="calibrations=calibrations.filter(x=>x.id!=${c.id}); renderCalibrations(); updateChart(); updateNewick()">✕</button>
+                </div>
+                <div style="margin-top:8px;">
+                    <label>Distribution Type</label>
+                    <select onchange="updateDistType(${c.id}, this.value)">
+                        ${Object.keys(Configs).map(k => `<option value="${k}" ${c.type === k ? 'selected' : ''}>${Configs[k].name}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="card-row">
+                    ${conf.fields.map(f => `<div><label>${f.label}</label><input type="number" step="0.1" value="${c.params[f.id]}" oninput="calibrations.find(x=>x.id==${c.id}).params.${f.id}=parseFloat(this.value); updateChart()"></div>`).join('')}
+                </div>
+                <div class="taxa-select-box">
+                    <div class="selection-header">Child Taxa</div>
+                    ${taxa.map(t => {
+                        const owner = calibrations.find(o => o.id !== c.id && o.childrenTaxa.includes(t));
+                        return `<label class="item-checkbox ${owner ? 'disabled' : ''}"><input type="checkbox" ${c.childrenTaxa.includes(t)?'checked':''} onchange="toggleExclusive(${c.id}, 'taxa', '${t}')">${t} ${owner ? `<span class="assigned-tag">${owner.label}</span>`:''}</label>`;
+                    }).join('')}
+                    <div class="selection-header">Child Calibrations</div>
+                    ${calibrations.filter(o => o.id !== c.id).map(o => {
+                        const owner = calibrations.find(p => p.id !== c.id && p.childrenCals.includes(o.id));
+                        const circular = isAncestor(o.id, c.id);
+                        const disabled = (owner || circular) && !c.childrenCals.includes(o.id);
+                        return `<label class="item-checkbox ${disabled ? 'disabled' : ''}"><input type="checkbox" ${c.childrenCals.includes(o.id)?'checked':''} ${disabled?'disabled':''} onchange="toggleExclusive(${c.id}, 'cals', ${o.id})">${o.label} ${owner?`<span class="assigned-tag">${owner.label}</span>`:''} ${circular?`<span class="assigned-tag">LOOP</span>`:''}</label>`;
+                    }).join('')}
+                </div>
+            </div>`;
+        }).join('');
+
+        if (middlePane) middlePane.scrollTop = mainScrollPos;
+        document.querySelectorAll('.dist-card').forEach(card => {
+            const calId = card.getAttribute('data-id');
+            const box = card.querySelector('.taxa-select-box');
+            if (box && internalScrolls[calId] !== undefined) box.scrollTop = internalScrolls[calId];
+        });
+    }
+
+    /** --- VISUALIZATION --- **/
+    function updateChart() {
+        const datasets = calibrations.map(c => {
+            const conf = Configs[c.type];
+            const [min, max] = conf.range(c.params); const data = [];
+            for(let i=0; i<=100; i++) { const x = min + (i * (max-min)/100); data.push({x, y: conf.pdf(x, c.params)}); }
+            return { label: c.label, data, borderColor: c.color, backgroundColor: c.color+'22', fill: true, pointRadius: 0, tension: 0.3, showLine: true };
+        });
+        if (!mainChart) mainChart = new Chart(document.getElementById('mainChart'), { type: 'scatter', data: { datasets }, options: { responsive: true, maintainAspectRatio: false, animation: false, scales: { x: {type:'linear', title:{display:true, text:'Time'}}, y: {beginAtZero:true} } } });
+        else { mainChart.data.datasets = datasets; mainChart.update(); }
+    }
+
+    function updateNewick() {
+        const hasParent = new Set();
+        calibrations.forEach(c => { c.childrenTaxa.forEach(t => hasParent.add(t)); c.childrenCals.forEach(cid => hasParent.add(`CAL_${cid}`)); });
+        const build = (cal) => {
+            const els = [...cal.childrenTaxa, ...cal.childrenCals.map(id => {const ch = calibrations.find(x=>x.id===id); return ch ? build(ch) : '';})].filter(x => x!=='');
+            return els.length ? `(${els.join(',')})${cal.label}` : cal.label;
+        };
+        const roots = [...calibrations.filter(c => !hasParent.has(`CAL_${c.id}`)).map(c => build(c)), ...taxa.filter(t => !hasParent.has(t))];
+        const nwk = roots.length > 1 ? `(${roots.join(',')})Root;` : (roots[0] ? roots[0] + ';' : '');
+        document.getElementById('newickInput').value = nwk;
+        drawTree(nwk);
+    }
+
+    function drawTree(newick) {
+        const container = document.getElementById('tree-container'); container.innerHTML = '';
+        if(!newick) return;
+        try {
+            const parse = (s) => {
+                var e = [], r = {}, parts = s.split(/\s*(;|\(|\)|,|:)\s*/);
+                for (var t = 0; t < parts.length; t++) {
+                    var n = parts[t];
+                    if (n === "(") { var c = {}; r.children = [c]; e.push(r); r = c; }
+                    else if (n === ",") { var c = {}; e[e.length-1].children.push(c); r = c; }
+                    else if (n === ")") { r = e.pop(); }
+                    else if (n !== ":" && n !== ";" && parts[t-1] !== ":") { r.name = n; }
+                } return r;
+            };
+            const data = parse(newick);
+            const width = container.clientWidth, height = container.clientHeight;
+            const svg = d3.select("#tree-container").append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(40,40)");
+            const root = d3.hierarchy(data); d3.cluster().size([height - 80, width - 150])(root);
+            svg.selectAll("path").data(root.links()).enter().append("path").attr("fill", "none").attr("stroke", "#ddd").attr("stroke-width", 2).attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
+            const nodes = svg.selectAll("g").data(root.descendants()).enter().append("g").attr("transform", d => `translate(${d.y},${d.x})`);
+            nodes.append("circle").attr("r", 5).attr("fill", d => d.children ? "#eee" : "#fff").attr("stroke", "steelblue").attr("stroke-width", 2);
+            nodes.append("text").attr("dy", "0.31em").attr("x", d => d.children ? -12 : 12).style("text-anchor", d => d.children ? "end" : "start").text(d => d.data.name || "").style("font-weight", d => d.children ? "bold" : "normal");
+        } catch(e) {}
+    }
+    
+    renderTaxa(); addCalibration();
+</script>
+</body>
+</html>
