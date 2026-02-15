@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>PhyloPotts models for phylogenetics with dependent sites</title>
+
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+				
+				<div style="font-size:40pt">PhyloPotts models for phylogenetics with dependent sites</div>
+				<p><center>Feb 2026</center></p>
+				<p><center>Remco Bouckaert</center></p>
+				</section>
+
+<section style="font-size:20pt">
+Felsenstein's peeling algorithm assumes independence</h3>
+<img width="100%" src="felsenstein.png" style="border:0px"/>
+<br>Alignment $A=\{s_{11},\ldots,s_{NL}\}$
+<br>Site probability $P(site_i)=\sum_{s_{root}}p(s_{i,root})\sum$<sub style="font-size:18px">internal node states</sub>$\prod_{j=1}^{2N-1}p(s_{ij}|\pi_{ij})$
+<br>Alignment probability $=\prod_iP(site_i)$
+<br><small style="color:grey">1</small>
+</section>
+
+<section>
+<h4>Potts models assumes pairwise dependence</h4>
+
+Sequence $S=\{a_1,\ldots,a_L\}$
+
+$$\log P(S|h,J) \propto \sum_{i=1}^{L} h_i(a_i) + \sum_{i&lt;j} J_{ij}(a_i, a_j)$$
+<br>$h_i$ profile term
+<br>$J_{ij}$ interaction term
+<br><center><img width="40%" src="potts.png" style="border:0px"/></center>
+<br><small style="color:grey">2</small>
+</section>
+
+<section>
+<h3>Potts models</h3>
+<center>
+<img width="33%" src="potts.png" style="border:0px"/>
+</center>
+<ul>
+<li>Many names: undirected graphical model/direct coupling analysis/Markov random field
+<li>Captures pairwise interaction
+<li>Many, many parameters, use regularisation when training, use MCMC for training
+<li>Successfully used in many areas using structural biology (protein design, 3D structure prediction, protein contact, etc.)
+</ul>
+<br><small style="color:grey">3</small>
+</section>
+
+<section>
+<h4>Potts models are purely statistical models</h4>
+Does not "know" about physics
+<br>Does not "know" about protein folding
+<center>
+<img width="49%" src="alphafold.png" style="border:0px"/>
+<!--img width="49%" src="alphafold2.png" style="border:0px"/-->
+</center>
+4 attempts of Alphafold to fold the same sequence
+<br><small style="color:grey">4</small>
+</section>
+
+<section>
+<h4>Potts models</h4>
+<center>
+<img width="65%" src="heatmap.png" style="border:0px"/>
+</center>
+<br><small style="color:grey">5</small>
+</section>
+
+
+
+<section>
+<h4>PhyloPotts model</h4>
+<small>
+<ul>
+<li>Simplest way to combine Potts model with phylogenetics
+<li>Extend state with sequence at root
+<li>Efficient inference due to Felsenstein
+<li>Pre-train Potts model on <b>any</b> alignment over the same sites (not jointly with tree)
+</ul>
+</small>
+<br><img width="100%" src="phylopotts.png" style="border:0px"/>
+<br><small style="color:grey">6</small>
+</section>
+
+
+<section>
+<h4>Substitution models for PhyloPotts model</h4>
+<small>
+<ul>
+<li>Use 20 states + 1 gap state for amino acids
+<li>Rate $q_{ij}, i\le 20, j\le 20$ from standard amino acid models with 
+<li>Simple gap model $q_{.g}=q_{g.}=1$
+<li>$\pi_g=1/21$, scale other frequencies to sum to 1
+</ul>
+</small>
+$$
+\begin{bmatrix}
+    -    & q_{12} & q_{13} & \dots  & q_{1n} & q_{1g}\\
+    q_{21} & -    & q_{23} & \dots  & q_{2n} & q_{2g}\\
+    \vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+    q_{d1} & q_{d2} & q_{d3} & \dots  &  -   & q_{ng}\\
+    q_{g1} & q_{g2} & q_{g3} & \dots  & g_{gn} & -   
+\end{bmatrix}
+$$
+<br><small style="color:grey">7</small>
+</section>
+
+<section>
+<h4>Alignment simulator for PhyloPotts models</h4>
+<center>
+<img width="49%" src="phylopotts.png" style="border:0px"/>
+</center>
+Given a tree $T$, we want to simulate an alignment on the tips
+<ul>
+<li>Sample root sequence from Potts model (independent of phylogeny)
+<li>Traverse down tree, sample site $k$ according to $P(x|\pi_x=y)= e^{Qt}$ where $t$ time of branch.
+<li>Collect sequences at tips of the tree
+</ul>
+<br><small style="color:grey">8</small>
+</section>
+
+<section>
+<h4>Well calibrated simulation study</h4>
+
+<table style="font-size:24px">
+<tr><td>Statistic </td><td> Coverage </td></tr>
+<tr><td>Tree height     </td><td> 98</td></tr>
+<tr><td>Tree length     </td><td>97</td></tr>
+<tr><td>Yule model      </td><td>97</td></tr>
+<tr><td>birth rate      </td><td>95</td></tr>
+<tr><td>Root states 1..82</td><td>&gt;95</td></tr>
+</table>
+
+<center>
+<img width="40%" src="triangle.png" style="border:0px;"/>
+</center>
+
+<br><small style="color:grey">9</small>
+</section>
+
+<section>
+<h4>Same under (standard) independent site model</h4>
+<center>
+
+<table style="font-size:24px">
+<tr><td>Statistic </td><td> Coverage </td></tr>
+<tr><td>Tree height     </td><td> 98</td></tr>
+<tr><td>Tree length     </td><td>97</td></tr>
+<tr><td>Yule model      </td><td>97</td></tr>
+<tr><td>birth rate      </td><td>96</td></tr>
+<tr><td>Root states 1..82</td><td>&gt;95</td></tr>
+</table>
+		<img width="40%" src="triangle-indep.png" style="border:0px"/>
+</center>
+<br><small style="color:grey">10</small>
+</section>
+
+
+<section>
+<h4>Root state distribution for site 3</h4>
+<center>
+		<img width="100%" src="rootstate.svg" style="border:0px"/>
+</center>
+<br><small style="color:grey">11</small>
+</section>
+
+<section>
+<h4>Pairwise root state distribution for sites </h4>
+<center>
+		<img width="49%" src="rootstates-dep.svg" style="border:0px"/>
+		<img width="49%" src="rootstates-indep.svg" style="border:0px"/>
+		
+		PhyloPotts vs Independent site model
+</center>
+<br><small style="color:grey">12</small>
+</section>
+
+<section>
+<h4>Conclusions</h4>
+<center>
+<img width="33%" src="phylopotts.png" style="border:0px"/>
+</center>
+<ul>
+<li>PhyloPotts models combine dependencies, while maintaining computational efficiency
+<li>Do not appear to affect phylogenetic estimates (very much)
+<li>Do substantially affect ancestral reconstruction (including gap sequences)
+<li>Potential for better gap models
+<li>Potential for joint Potts, tree and alignment estimation
+<li>Potential to introduce more Potts using EMATS
+</ul>
+<div style="font-size:16px">Preprint: R.Bouckaert. A first order approximation of a joint Potts and phylogenetic model. BioRxiv 2026</div>
+</section>
+
+
+				</div>
+		</div>
+
+		<script src="../Auckland2023/../reveal.js-3.3.0/lib/js/head.min.js"></script>
+		<script src="../Auckland2023/../reveal.js-3.3.0/js/reveal.js"></script>
+		<!-->
+		<script src="../Auckland2023/../reveal.js-3.3.0/plugin/math/math.js"></script>
+		-->
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '../reveal.js-3.3.0/plugin/markdown/marked.js' },
+					{ src: '../reveal.js-3.3.0/plugin/markdown/markdown.js' },
+					{ src: '../reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+					{ src: '../reveal.js-3.3.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				],
+			});
+			Reveal.initialize({
+mathjax2: {
+    mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js',
+    config: 'TeX-AMS_HTML-full',
+    // pass other options into `MathJax.Hub.Config()`
+    tex2jax: {
+      inlineMath: [ [ '$', '$' ], [ '\\(', '\\)' ] ],
+      skipTags: [ 'script', 'noscript', 'style', 'textarea', 'pre' ]
+    }
+  },
+  plugins: [ RevealMath.MathJax2 ]
+			});
+		</script>
+	</body>
+</html>
+
