@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>What is new in BEAST v2.8</title>
+
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js-3.3.0/css/theme/sky.css">
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal.js-3.3.0/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js-3.3.0/css/print/pdf.css' : '../reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+				
+				<div style="font-size:40pt;text-align:center;">What is new in BEAST v2.8</div>
+				<p><center>Aug 2026</center></p>
+				<p><center>Remco Bouckaert</center></p>
+				</section>
+
+<section style="font-size:20pt"><h3>What is BEAST?</h3>
+BEAST = Bayesian Evolutionary Analysis Sampling Trees
+<div class="fragment">BEAST = set of programs for Bayesian phylogenetic analysis</div>
+<div class="fragment">Build for extension: about 90 packages</div>
+<img width="100%" src="../BEAST2Intro/commonUsage.png" style="border:0px"/>
+<div class="fragment">Bayesian implies: 1. everything is a distribution, 2. model based</div>
+	</section>
+
+<section><h4>Selection of New Models</h4>
+	<small>
+		<ul>
+	<li>New Data types
+		<ul>
+			<li>3Di
+			<li>Single cell sequencing (various)
+		</ul>
+	</li>
+	<li class="fragment">New Site models
+		<ul>
+			<li>OBAMA
+			<li>Mixture
+		</ul>
+	</li>
+	<li class="fragment">New Substitution models
+		<ul>
+			<li>Structural evolution
+			<li>Single cell sequencing
+			<li>Morphological models
+		</ul>
+	</li>
+	<li class="fragment">New Clock models
+		<ul>
+			<li>Spike model
+			<li>Clock mixture model
+		</ul>
+	</li>
+	<li class="fragment">New Tree models
+		<ul>
+			<li>MASCOT skyline (structured coalescent)
+			<li>Multi species coalescent (species delimitation)
+			<li>ContacTrees (language data with borrowing)
+		</ul>
+	</li>
+	</ul>
+	</small>
+</section>
+
+<!--
+<section><h4>New Data types</h4>
+	<li>
+	<li>
+</section>
+
+<section><h4>New Site models</h4>
+	<li>
+	<li>
+	<li>
+	<li>
+</section>
+-->
+
+
+<section><h4>New Substitution models: </h4>
+	<table><tr><td>
+<img width="80%" src="errormodel.jpg" style="border:0px"/>
+</td><td style="vertical-align:top">
+<span style="font-size:20pt">Single cell sequence data
+<br>With and without error model</span>
+</td></tr></table>
+<small>Chen et al. MBE. 2022 Aug 1;39(8):msac143.</small>
+</section>
+
+<section><h4>New Clock models: spike model</h4>
+<img width="100%" src="spikemodel.jpg" style="border:0px"/>
+<small>Douglas et al. Proc Roy Soc B. 2025;292(2047):20250182.</small>
+</section>
+
+<section><h4>New Tree models: MASCOT skyline</h4>
+	&nbsp;&nbsp;&nbsp;
+<img width="80%" src="mascot.png" style="border:0px"/>
+<small>Müller et al. PLoS Comp Bio. 2025;21(9):e1013421.</small>
+</section>
+
+
+<section><h4>Improvements in computational efficiency</h4>
+	<ul style="font-size:20pt">
+	<li>New MCMC operators
+		<ul>
+			<li>Bactrian<li> Adaptable<li> Targeted<li> Parallel (sb3)
+		</ul>
+	<li class="fragment">New methods of inference
+		<ul>
+			<li>Adaptable Coupled MCMC
+			<li>Variational Bayes -- cube space
+			<li>Online analysis
+		</ul>
+	</ul>
+</section>
+
+<section><h4>New Post Processing Tools</h4>
+	<ul style="font-size:20pt">
+	<li>Tree file analysis
+		<ul>
+			<li>TreeAnnotator (CCD0)
+			<li>Clade set counting
+			<li>...
+		</ul>
+	<li>Tree file manipulation
+		<ul>
+			<li>Removing taxa
+			<li>File format conversion
+			<li>...
+		</ul>
+	<li>Model specific tools
+		<ul>
+			<li>OBAMAAnalyser
+			<li>YuleSkylineLogProducer
+			<li>ClusterTreeSetAnalyser -- species delimitation
+			<li>...
+		</ul>
+	<li>Misc
+		<ul>
+			<li>DocMaker/FeastQuery for navigating BEAST functionality
+			<li>PackageHealthChecker
+			<li>...
+		</ul>
+	</ul>
+</section>
+
+<section><h4>Tractable tree distributions</h4>
+<span style="font-size:20pt">Conditional Clade Distribution (CCD)</space><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img width="60%" src="ccd.png" style="border:0px"/>
+<small style="font-size:20pt">Enables: Entropy calculation, Compare tree sets, Summary tree (CCD0), Rogue detection, Hypothesis testing, Improve inference, Skeleton analysis, ...</small>
+<br>&nbsp;<br>
+<small>Klawitter et al. bioRxiv. 2024 Sep 27:2024-09.</small>
+</section>
+
+<section><h4>Skeleton analysis (CCD)</h4>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<img width="70%" src="skeleton.png" style="border:0px;margin:auto"/>
+</section>
+
+<section><h4>New Developments for Developers</h4>
+	<ul style="font-size:20pt">
+	<li>Strong typing
+		<ul>
+			<li>Prevents building of invalid models
+			<li>More flexible mixing and matching of models
+			<li>BEAUti can show more sensible priors
+			<li>Enables PhyloSpec support
+		</ul>
+	<li class="fragment">Java Platform Module System (JPMS) + Maven
+		<ul>
+			<li>Enabling AI assisted development 
+		</ul>
+	<li class="fragment">Developer support
+		<ul>
+			<li>Simulators LinguaPhylo, ReMASTER
+			<li>Tools to assist in well calibrated simulation studies
+		</ul>
+	</ul>
+</section>
+
+
+
+<section>
+<h4>Conclusions BEAST v2.8</h4>
+<center>
+<img width="20%" src="../BEAST2Intro/beast.png" style="border:0px"/>
+</center>
+<ul style="font-size:20pt">
+	<li>Ever growning collection of models
+	<li>Ongoing development focussed on new methods/efficiency
+	<li>Provides modern environment for package developers
+	<li>Well supported eco system for training
+</ul>
+
+
+<p style="font-size:20pt">Credits: all BEAST2 developers</p>
+
+<div style="font-size:16px">Preprint: R.Bouckaert et al. BEAST: a State-of-the-art Software Platform for Bayesian Evolutionary Analysis. In preparation. 2026</div>
+</section>
+
+
+				</div>
+		</div>
+
+		<script src="../Auckland2023/../reveal.js-3.3.0/lib/js/head.min.js"></script>
+		<script src="../Auckland2023/../reveal.js-3.3.0/js/reveal.js"></script>
+		<script src="../Auckland2023/../reveal.js-3.3.0/plugin/math/math.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '../reveal.js-3.3.0/plugin/markdown/marked.js' },
+					{ src: '../reveal.js-3.3.0/plugin/markdown/markdown.js' },
+					{ src: '../reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+					{ src: '../reveal.js-3.3.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				],
+			});
+			Reveal.initialize({
+mathjax2: {
+    mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js',
+    config: 'TeX-AMS_HTML-full',
+    // pass other options into `MathJax.Hub.Config()`
+    tex2jax: {
+      inlineMath: [ [ '$', '$' ], [ '\\(', '\\)' ] ],
+      skipTags: [ 'script', 'noscript', 'style', 'textarea', 'pre' ]
+    }
+  },
+  plugins: [ RevealMath.MathJax2 ]
+			});
+		</script>
+	</body>
+</html>
+
